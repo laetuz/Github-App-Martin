@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
@@ -16,7 +17,7 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: RvUserListBinding
-    private lateinit var adapter: MainAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = RvUserListBinding.inflate(layoutInflater)
@@ -37,44 +38,43 @@ class MainActivity : AppCompatActivity() {
     private fun getUser() {
         showLoading(true)
         val client = ApiConfig.getApiService().getUser()
-        client.enqueue(object : Callback<GithubResponse> {
+        client.enqueue(object : Callback<List<GithubResponseItem>> {
             override fun onResponse(
-                call: Call<GithubResponse>,
-                response: Response<GithubResponse>
+                call: Call<List<GithubResponseItem>>,
+                response: Response<List<GithubResponseItem>>
             ) {
                 showLoading(false)
                 if (response.isSuccessful) {
-                    setRecView()
                     val responseBody = response.body()
-                    if (responseBody != null) {
-                        response.body()?.responseItem
-                    }
+                    setRecView(responseBody)
                 } else {
                     Log.e(TAG,"On failure: ${response.message()}")
+                    Toast.makeText(this@MainActivity, "else ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(call: Call<GithubResponse>, t: Throwable) {
+            override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
                 showLoading(false)
+                Log.e(TAG,"On failure: ${t.message}")
+                Toast.makeText(this@MainActivity, "onfailure ${t.message}", Toast.LENGTH_SHORT).show()
             }
 
 
         })
     }
 
-    private fun setRecView() {
-        adapter = MainAdapter()
-        adapter.setData(arrayListOf())
+    private fun setRecView(listData: List<GithubResponseItem>?) {
+        val adapter = listData?.let { MainAdapter(it) }
         val layoutManager = LinearLayoutManager(this)
-        binding.rvHomeList.layoutManager = layoutManager
-        val itemDivider = DividerItemDecoration(this, layoutManager.orientation)
-        binding.rvHomeList.addItemDecoration(itemDivider)
-        binding.rvHomeList.adapter = adapter
+        binding.apply {
+            rvHomeList.layoutManager = layoutManager
+            val itemDivider = DividerItemDecoration(this@MainActivity, layoutManager.orientation)
+            rvHomeList.addItemDecoration(itemDivider)
+            rvHomeList.adapter = adapter
+        }
+        listData?.get(0)
     }
 
-    private fun adapter(){
-
-    }
     private fun setUserList(userList: List<GithubResponseItem>){
         val thatList = ArrayList<String>()
         for (login in userList){

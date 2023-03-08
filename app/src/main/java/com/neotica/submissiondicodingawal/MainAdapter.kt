@@ -9,22 +9,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
-import com.neotica.submissiondicodingawal.response.UserData
+import java.util.*
 
 
-class MainAdapter :
+class MainAdapter(private val users: List<GithubResponseItem>) :
     RecyclerView.Adapter<MainAdapter.ListViewHolder>() {
-    private lateinit var userList: ArrayList<GithubResponseItem>
-
-    fun setData(listUser: ArrayList<GithubResponseItem>) {
-        this.userList = listUser
-    }
 
     class ListViewHolder(private val binding: IvUserListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindData(listUser: GithubResponseItem) {
             binding.apply {
-                tvUsername.text = listUser.login
+                tvUsername.text = listUser.login.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase(
+                        Locale.ROOT
+                    ) else it.toString()
+                }
                 Glide.with(root)
                     .load(listUser.avatar_url)
                     .into(ivProfile)
@@ -37,14 +36,14 @@ class MainAdapter :
     }
 
     override fun getItemCount(): Int {
-        return userList.size
+        return users.size
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bindData(userList[position])
+        holder.bindData(users[position])
         holder.itemView.setOnClickListener {
             Log.d(TAG, "Binding item at position $position")
-            Toast.makeText(holder.itemView.context, "position", Toast.LENGTH_SHORT).show()
+            Toast.makeText(holder.itemView.context, "$position", Toast.LENGTH_SHORT).show()
         }
     }
 }
