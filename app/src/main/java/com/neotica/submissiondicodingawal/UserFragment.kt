@@ -15,9 +15,11 @@ import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import androidx.navigation.NavController
 
 class UserFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,12 +55,14 @@ class UserFragment : Fragment() {
         client.enqueue(object : Callback<List<GithubResponseItem>> {
             override fun onResponse(
                 call: Call<List<GithubResponseItem>>,
-                response: Response<List<GithubResponseItem>>
+                response: Response<List<GithubResponseItem>>,
             ) {
                 showLoading(false)
                 if (response.isSuccessful) {
                     val responseBody = response.body()
-                    setRecView(responseBody)
+                    navController = NavController(requireContext())
+                    val action =
+                    setRecView(responseBody, navController)
                 } else {
                     Log.e(ContentValues.TAG,"On failure: ${response.message()}")
                     Toast.makeText(context, "else ${response.message()}", Toast.LENGTH_SHORT).show()
@@ -75,8 +79,8 @@ class UserFragment : Fragment() {
         })
     }
 
-    private fun setRecView(listData: List<GithubResponseItem>?) {
-        val adapter = listData?.let { MainAdapter(it) }
+    private fun setRecView(listData: List<GithubResponseItem>?, navController: NavController) {
+        val adapter = listData?.let { MainAdapter(it, navController) }
         val layoutManager = LinearLayoutManager(context)
         binding.apply {
             rvHomeList.layoutManager = layoutManager

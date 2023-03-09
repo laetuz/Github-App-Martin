@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
@@ -12,7 +14,7 @@ import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import java.util.*
 
 
-class MainAdapter(private val users: List<GithubResponseItem>) :
+class MainAdapter(private val users: List<GithubResponseItem>, private val navController: NavController) :
     RecyclerView.Adapter<MainAdapter.ListViewHolder>() {
 
     class ListViewHolder(private val binding: IvUserListBinding) :
@@ -41,9 +43,11 @@ class MainAdapter(private val users: List<GithubResponseItem>) :
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         holder.bindData(users[position])
-        holder.itemView.setOnClickListener {
+        holder.itemView.setOnClickListener {view ->
+            val action = UserFragmentDirections.actionUserFragmentToUserProfileFragment(users[position].avatar_url)
             Log.d(TAG, "Binding item at position $position")
             Toast.makeText(holder.itemView.context, "$position", Toast.LENGTH_SHORT).show()
+            view.findNavController().navigate(action)
         }
     }
 }

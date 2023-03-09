@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android-extensions'
+    //SafeArgs
+    id 'kotlin-android'
+    id "androidx.navigation.safeargs"
 }
 
 android {
