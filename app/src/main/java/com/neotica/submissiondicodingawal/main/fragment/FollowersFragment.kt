@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal
+package com.neotica.submissiondicodingawal.main.fragment
 
 import android.content.ContentValues
 import android.os.Bundle
@@ -16,8 +16,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.navigation.NavController
+import com.neotica.submissiondicodingawal.main.MainAdapter
+import com.neotica.submissiondicodingawal.retrofit.ApiConfig
 
-class UserFragment : Fragment() {
+class FollowersFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
     private lateinit var navController: NavController
 
@@ -61,7 +63,6 @@ class UserFragment : Fragment() {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     navController = NavController(requireContext())
-                    val action =
                     setRecView(responseBody, navController)
                 } else {
                     Log.e(ContentValues.TAG,"On failure: ${response.message()}")
@@ -80,7 +81,7 @@ class UserFragment : Fragment() {
     }
 
     private fun setRecView(listData: List<GithubResponseItem>?, navController: NavController) {
-        val adapter = listData?.let { MainAdapter(it, navController) }
+        val adapter = listData?.let { MainAdapter(it) }
         val layoutManager = LinearLayoutManager(context)
         binding.apply {
             rvHomeList.layoutManager = layoutManager

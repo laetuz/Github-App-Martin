@@ -6,7 +6,7 @@
     app:startDestination="@id/userFragment">
     <fragment
         android:id="@+id/userFragment"
-        android:name="com.neotica.submissiondicodingawal.UserFragment"
+        android:name="com.neotica.submissiondicodingawal.main.fragment.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user" >
         <action
@@ -17,11 +17,28 @@
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.neotica.submissiondicodingawal.UserProfileFragment"
+        android:name="com.neotica.submissiondicodingawal.main.fragment.UserProfileFragment"
         android:label="UserProfileFragment" >
         <argument
-            android:name="profile"
+            android:name="avatar"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="profile"
+            app:argType="string"/>
+        <argument
+            android:name="followers"
+            app:argType="string" />
+        <argument
+            android:name="following"
+            app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/followersFragment"
+        android:name="com.neotica.submissiondicodingawal.main.fragment.FollowersFragment"
+        android:label="FollowersFragment" />
+    <fragment
+        android:id="@+id/followingFragment"
+        android:name="com.neotica.submissiondicodingawal.main.fragment.FollowingFragment"
+        android:label="FollowingFragment" />
 </navigation>
