@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
@@ -17,11 +19,15 @@ import retrofit2.Callback
 import retrofit2.Response
 import androidx.navigation.NavController
 import com.neotica.submissiondicodingawal.main.MainAdapter
+import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
+import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 import com.neotica.submissiondicodingawal.retrofit.ApiConfig
 
 class UserFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
     private lateinit var navController: NavController
+
+    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +45,7 @@ class UserFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getUser()
+        getUserViewModel()
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -48,6 +54,17 @@ class UserFragment : Fragment() {
             binding.progressBar.visibility = View.VISIBLE
         } else {
             binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun getUserViewModel(){
+        showLoading(true)
+        viewModel.getUser()
+
+        viewModel.githubResponse.observe(viewLifecycleOwner) { github ->
+            if (github != null) {
+                setRecView(github)
+            }
         }
     }
 
@@ -82,12 +99,14 @@ class UserFragment : Fragment() {
 
     private fun setRecView(listData: List<GithubResponseItem>?) {
         val adapter = listData?.let { MainAdapter(it) }
+        binding.rvHomeList.apply {
+            layoutManager=LinearLayoutManager(context)
+            this.adapter = adapter
+        }
         val layoutManager = LinearLayoutManager(context)
         binding.apply {
-            rvHomeList.layoutManager = layoutManager
             val itemDivider = DividerItemDecoration(context, layoutManager.orientation)
             rvHomeList.addItemDecoration(itemDivider)
-            rvHomeList.adapter = adapter
         }
         listData?.get(0)
     }

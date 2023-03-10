@@ -22,10 +22,10 @@ class MainAdapter(private val users: List<GithubResponseItem>) :
             binding.apply {
                 tvUsername.text = listUser.login
                     .replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(
-                        Locale.ROOT
-                    ) else it.toString()
-                }
+                        if (it.isLowerCase()) it.titlecase(
+                            Locale.ROOT
+                        ) else it.toString()
+                    }
                 Glide.with(root)
                     .load(listUser.avatar_url)
                     .into(ivProfile)
@@ -48,9 +48,14 @@ class MainAdapter(private val users: List<GithubResponseItem>) :
         val username = users[position].login
         val followers = users[position].followers_url
         val following = users[position].following_url
-        holder.itemView.setOnClickListener {view ->
+        holder.itemView.setOnClickListener { view ->
             val action =
-                UserFragmentDirections.actionUserFragmentToUserProfileFragment(avatar, username, followers, following)
+                UserFragmentDirections.actionUserFragmentToUserProfileFragment(
+                    avatar,
+                    username,
+                    followers,
+                    following
+                )
             view.findNavController().navigate(action)
         }
     }

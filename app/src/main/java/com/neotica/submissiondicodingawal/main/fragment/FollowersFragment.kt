@@ -53,9 +53,9 @@ class FollowersFragment : Fragment() {
 
     private fun getUser() {
         showLoading(true)
-        val followers = UserProfileFragmentArgs.fromBundle(arguments as Bundle).followers
+//        val followers = UserProfileFragmentArgs.fromBundle(arguments as Bundle).followers
         // TODO: Make repository and viewmodel for getfollowers 
-        val client = ApiConfig.getApiService().getFollowers(followers)
+        val client = ApiConfig.getApiService().getUser()
         client.enqueue(object : Callback<List<GithubResponseItem>> {
             override fun onResponse(
                 call: Call<List<GithubResponseItem>>,

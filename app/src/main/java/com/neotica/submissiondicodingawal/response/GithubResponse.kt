@@ -1,5 +1,5 @@
 package com.neotica.submissiondicodingawal.response
 
 data class GithubResponse(
-    val responseItem: List<GithubResponseItem>
+    val responseItem: List<GithubResponseItem>? = null
 )
