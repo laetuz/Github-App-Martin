@@ -6,6 +6,7 @@ data class GithubResponseItem(
     @SerializedName("avatar_url")
     val avatar_url: String,
     val events_url: String,
+    @SerializedName("followers_url")
     val followers_url: String,
     val following_url: String,
     val gists_url: String,

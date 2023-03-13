@@ -32,11 +32,22 @@
         <argument
             android:name="following"
             app:argType="string" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_followersFragment"
+            app:destination="@id/followersFragment" />
     </fragment>
     <fragment
         android:id="@+id/followersFragment"
         android:name="com.neotica.submissiondicodingawal.main.fragment.FollowersFragment"
-        android:label="FollowersFragment" />
+        android:label="FollowersFragment" >
+        <argument
+            android:name="avatar"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="profile"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/followingFragment"
         android:name="com.neotica.submissiondicodingawal.main.fragment.FollowingFragment"

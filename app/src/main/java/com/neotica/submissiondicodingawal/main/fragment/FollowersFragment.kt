@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
@@ -16,12 +18,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.navigation.NavController
+import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.main.MainAdapter
+import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
+import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 import com.neotica.submissiondicodingawal.retrofit.ApiConfig
+import kotlinx.coroutines.launch
+import java.util.*
 
 class FollowersFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
-    private lateinit var navController: NavController
+    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +46,8 @@ class FollowersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getUser()
+        lifecycleScope.launch { getUserViewModel() }
+        //getUserViewModel()
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -51,45 +59,35 @@ class FollowersFragment : Fragment() {
         }
     }
 
-    private fun getUser() {
+    private suspend fun getUserViewModel() {
         showLoading(true)
-//        val followers = UserProfileFragmentArgs.fromBundle(arguments as Bundle).followers
-        // TODO: Make repository and viewmodel for getfollowers 
-        val client = ApiConfig.getApiService().getUser()
-        client.enqueue(object : Callback<List<GithubResponseItem>> {
-            override fun onResponse(
-                call: Call<List<GithubResponseItem>>,
-                response: Response<List<GithubResponseItem>>,
-            ) {
+        val profile = FollowersFragmentArgs.fromBundle(arguments as Bundle).profile
+        viewModel.getFollowers(profile)
+     //   Toast.makeText(context, profile, Toast.LENGTH_SHORT).show()
+        viewModel.githubResponse.observe(viewLifecycleOwner) { github ->
+            if (github != null) {
                 showLoading(false)
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    navController = NavController(requireContext())
-                    setRecView(responseBody, navController)
-                } else {
-                    Log.e(ContentValues.TAG,"On failure: ${response.message()}")
-                    Toast.makeText(context, "else ${response.message()}", Toast.LENGTH_SHORT).show()
-                }
+                setRecView(github)
             }
-
-            override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
-                showLoading(false)
-                Log.e(ContentValues.TAG,"On failure: ${t.message}")
-                Toast.makeText(context, "onfailure ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-
-
-        })
+        }
     }
 
-    private fun setRecView(listData: List<GithubResponseItem>?, navController: NavController) {
+    private fun bindHEHE(){
+        val avatar = UserProfileFragmentArgs.fromBundle(arguments as Bundle).avatar.toString()
+        val profile = UserProfileFragmentArgs.fromBundle(arguments as Bundle).profile
+        val followers = UserProfileFragmentArgs.fromBundle(arguments as Bundle).followers
+    }
+
+    private fun setRecView(listData: List<GithubResponseItem>?) {
         val adapter = listData?.let { MainAdapter(it) }
+        binding.rvHomeList.apply {
+            layoutManager = LinearLayoutManager(context)
+            this.adapter = adapter
+        }
         val layoutManager = LinearLayoutManager(context)
         binding.apply {
-            rvHomeList.layoutManager = layoutManager
             val itemDivider = DividerItemDecoration(context, layoutManager.orientation)
             rvHomeList.addItemDecoration(itemDivider)
-            rvHomeList.adapter = adapter
         }
         listData?.get(0)
     }

@@ -60,9 +60,9 @@ class UserFragment : Fragment() {
     private fun getUserViewModel(){
         showLoading(true)
         viewModel.getUser()
-
         viewModel.githubResponse.observe(viewLifecycleOwner) { github ->
             if (github != null) {
+                showLoading(false)
                 setRecView(github)
             }
         }
