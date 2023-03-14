@@ -48,9 +48,7 @@ class FollowersAdapter(private val users: List<GithubResponseItem>) :
         holder.bindData(users[position])
         val avatar = users[position].avatar_url
         val username = users[position].login
-        val followers = users[position].followers_url
-        val following = users[position].following_url
-        holder.itemView.setOnClickListener { view ->
+        /*holder.itemView.setOnClickListener { view ->
             val action =
                 UserFragmentDirections.actionUserFragmentToUserProfileFragment(
                     avatar,
@@ -59,6 +57,6 @@ class FollowersAdapter(private val users: List<GithubResponseItem>) :
                     following
                 )
             view.findNavController().navigate(action)
-        }
+        }*/
     }
 }

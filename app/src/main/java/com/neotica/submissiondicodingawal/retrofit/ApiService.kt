@@ -14,7 +14,9 @@ interface ApiService {
     fun getUser(): Call<List<GithubResponseItem>>
 
     @GET("users/{login}/followers")
-    suspend fun getFollowers(@Path("login")login: String): Call<List<GithubResponseItem>>
+    fun getFollowers(
+        @Path("login")login: String
+    ): Call<List<GithubResponseItem>>
 
     @GET("users")
     fun getUsername(): GithubResponseItem

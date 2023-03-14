@@ -14,6 +14,9 @@
             app:destination="@id/userProfileFragment"
             app:popUpTo="@id/userProfileFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_userFragment_to_followersFragment2"
+            app:destination="@id/followersFragment" />
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
@@ -32,9 +35,6 @@
         <argument
             android:name="following"
             app:argType="string" />
-        <action
-            android:id="@+id/action_userProfileFragment_to_followersFragment"
-            app:destination="@id/followersFragment" />
     </fragment>
     <fragment
         android:id="@+id/followersFragment"

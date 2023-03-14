@@ -46,7 +46,7 @@ class GithubViewModel(
         })
     }
 
-    suspend fun getFollowers(name: String) {
+    fun getFollowers(name: String) {
         ApiConfig.getApiService().getFollowers(name).enqueue(object : Callback<List<GithubResponseItem>> {
             override fun onResponse(
                 call: Call<List<GithubResponseItem>>,

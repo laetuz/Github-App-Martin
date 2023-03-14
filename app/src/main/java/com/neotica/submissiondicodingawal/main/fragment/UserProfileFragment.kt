@@ -70,7 +70,7 @@ class UserProfileFragment : Fragment() {
                 ) else it.toString()
             }
         }
-        val action = UserProfileFragmentDirections.actionUserProfileFragmentToFollowersFragment(avatar, profile)
-        findNavController().navigate(action)
+        /*val action = UserProfileFragmentDirections.actionUserProfileFragmentToFollowersFragment(avatar, profile)
+        findNavController().navigate(action)*/
     }
 }
