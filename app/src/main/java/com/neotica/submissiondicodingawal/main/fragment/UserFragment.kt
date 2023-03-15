@@ -1,31 +1,22 @@
 package com.neotica.submissiondicodingawal.main.fragment
 
-import android.content.ContentValues
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import androidx.navigation.NavController
-import com.neotica.submissiondicodingawal.main.MainAdapter
+import com.neotica.submissiondicodingawal.main.fragment.adapter.UserFragmentAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
-import com.neotica.submissiondicodingawal.retrofit.ApiConfig
 
 class UserFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
-    private lateinit var navController: NavController
 
     private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
@@ -69,7 +60,7 @@ class UserFragment : Fragment() {
     }
 
     private fun setRecView(listData: List<GithubResponseItem>?) {
-        val adapter = listData?.let { MainAdapter(it) }
+        val adapter = listData?.let { UserFragmentAdapter(it) }
         binding.rvHomeList.apply {
             layoutManager=LinearLayoutManager(context)
             this.adapter = adapter

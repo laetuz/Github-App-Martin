@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.main
+package com.neotica.submissiondicodingawal.main.fragment.adapter
 
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -13,8 +13,8 @@ import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import java.util.*
 
 
-class MainAdapter(private val users: List<GithubResponseItem>) :
-    RecyclerView.Adapter<MainAdapter.ListViewHolder>() {
+class UserFragmentAdapter(private val users: List<GithubResponseItem>) :
+    RecyclerView.Adapter<UserFragmentAdapter.ListViewHolder>() {
 
     class ListViewHolder(private val binding: IvUserListBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -51,10 +51,7 @@ class MainAdapter(private val users: List<GithubResponseItem>) :
         holder.itemView.setOnClickListener { view ->
             val action =
                 UserFragmentDirections.actionUserFragmentToUserProfileFragment(
-                    avatar,
-                    username,
-                    followers,
-                    following
+                    avatar, username, followers, following
                 )
             view.findNavController().navigate(action)
         }

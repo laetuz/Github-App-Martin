@@ -20,6 +20,11 @@ interface ApiService {
         @Path("login")login: String
     ): Call<List<GithubResponseItem>>
 
+    @GET("search/users?q={login}")
+    fun searchUser(
+        @Path("login")login: String
+    ): Call<List<GithubResponseItem>>
+
     @GET("users")
     fun getUsername(): GithubResponseItem
 
@@ -28,10 +33,4 @@ interface ApiService {
     fun getUser(
         @Query("q") login: String
     ): Call<List<GithubResponseItem>>*/
-
-    companion object {
-        fun loginUrl(login: String): String {
-            return "users/$login/followers"
-        }
-    }
 }

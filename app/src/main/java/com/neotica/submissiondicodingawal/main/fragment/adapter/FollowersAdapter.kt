@@ -4,13 +4,11 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.neotica.submissiondicodingawal.main.fragment.UserFragmentDirections
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
+import com.neotica.submissiondicodingawal.main.fragment.FollowersFragmentDirections
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import java.util.*
 
@@ -47,15 +45,13 @@ class FollowersAdapter(private val users: List<GithubResponseItem>) :
         Log.d(TAG, "Binding item at position $position")
         holder.bindData(users[position])
         val avatar = users[position].avatar_url
-        val username = users[position].login
-        /*holder.itemView.setOnClickListener { view ->
-            val action =
-                UserFragmentDirections.actionUserFragmentToUserProfileFragment(
-                    avatar,
-                    username,
-                    followers,
-                    following
-                )
+        val profile = users[position].login
+        val followers = users[position].followers_url
+        val following = users[position].following_url
+       /* holder.itemView.setOnClickListener { view ->
+            val action = FollowersFragmentDirections.actionFollowersFragmentToUserProfileFragment(
+                avatar, profile, followers, following
+            )
             view.findNavController().navigate(action)
         }*/
     }

@@ -5,13 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
-import com.neotica.submissiondicodingawal.main.MainAdapter
+import com.neotica.submissiondicodingawal.main.fragment.adapter.FollowersAdapter
+import com.neotica.submissiondicodingawal.main.fragment.adapter.UserFragmentAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
@@ -37,7 +37,7 @@ class FollowersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch { getUserViewModel() }
+        lifecycleScope.launch { getFollowers() }
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -48,17 +48,14 @@ class FollowersFragment : Fragment() {
         }
     }
 
-    private fun getUserViewModel() {
+    private fun getFollowers() {
         showLoading(true)
-//        val avatar = FollowersFragmentArgs.fromBundle(arguments as Bundle).avatar.toString()
         val test = requireParentFragment().arguments?.let {
             FollowersFragmentArgs.fromBundle(it)
         }?.profile
-      //  val profile = FollowersFragmentArgs.fromBundle(arguments as Bundle).profile
         if (test != null) {
             viewModel.getFollowers(test)
         }
-       // Toast.makeText(context, test, Toast.LENGTH_SHORT).show()
         viewModel.githubResponse.observe(viewLifecycleOwner) { github ->
             if (github != null) {
                 showLoading(false)
@@ -67,13 +64,8 @@ class FollowersFragment : Fragment() {
         }
     }
 
-    private fun bindHEHE(){
-        val avatar = FollowersFragmentArgs.fromBundle(arguments as Bundle).avatar.toString()
-        val profile = FollowersFragmentArgs.fromBundle(arguments as Bundle).profile
-    }
-
     private fun setRecView(listData: List<GithubResponseItem>?) {
-        val adapter = listData?.let { MainAdapter(it) }
+        val adapter = listData?.let { FollowersAdapter(it) }
         binding.rvHomeList.apply {
             layoutManager = LinearLayoutManager(context)
             this.adapter = adapter
