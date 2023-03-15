@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,11 +54,11 @@ class FollowersFragment : Fragment() {
         val test = requireParentFragment().arguments?.let {
             FollowersFragmentArgs.fromBundle(it)
         }?.profile
-        val profile = FollowersFragmentArgs.fromBundle(arguments as Bundle).profile
+      //  val profile = FollowersFragmentArgs.fromBundle(arguments as Bundle).profile
         if (test != null) {
-            viewModel.getFollowers(profile)
+            viewModel.getFollowers(test)
         }
-     //   Toast.makeText(context, profile, Toast.LENGTH_SHORT).show()
+       // Toast.makeText(context, test, Toast.LENGTH_SHORT).show()
         viewModel.githubResponse.observe(viewLifecycleOwner) { github ->
             if (github != null) {
                 showLoading(false)
