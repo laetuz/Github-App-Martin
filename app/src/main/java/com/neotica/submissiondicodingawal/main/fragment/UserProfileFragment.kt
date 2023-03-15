@@ -58,7 +58,6 @@ class UserProfileFragment : Fragment() {
     private fun bindHEHE(){
         val avatar = UserProfileFragmentArgs.fromBundle(arguments as Bundle).avatar.toString()
         val profile = UserProfileFragmentArgs.fromBundle(arguments as Bundle).profile
-        val followers = UserProfileFragmentArgs.fromBundle(arguments as Bundle).followers
         binding.apply {
             Glide.with(root)
                 .load(avatar)
@@ -70,7 +69,5 @@ class UserProfileFragment : Fragment() {
                 ) else it.toString()
             }
         }
-        /*val action = UserProfileFragmentDirections.actionUserProfileFragmentToFollowersFragment(avatar, profile)
-        findNavController().navigate(action)*/
     }
 }

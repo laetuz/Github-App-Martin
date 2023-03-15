@@ -5,7 +5,7 @@ import com.neotica.submissiondicodingawal.retrofit.ApiClient
 import com.neotica.submissiondicodingawal.retrofit.ApiConfig
 
 class GithubRepoManager {
-    private val apiClient = ApiConfig.getApiService()
+    private val apiConfig = ApiConfig.getApiService()
 
-    suspend fun getUser(): GithubResponseItem = apiClient.getUsername()
+    fun getUser(): GithubResponseItem = apiConfig.getUsername()
 }

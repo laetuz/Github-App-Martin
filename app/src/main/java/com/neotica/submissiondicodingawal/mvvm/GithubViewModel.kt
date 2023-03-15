@@ -24,6 +24,9 @@ class GithubViewModel(
 
     var isFailureCaseMessage = MutableLiveData("")
 
+    suspend fun repo(){
+        githubRepo.getUser()
+    }
     fun getUser() {
         ApiConfig.getApiService().getUser().enqueue(object : Callback<List<GithubResponseItem>> {
             override fun onResponse(
@@ -48,6 +51,28 @@ class GithubViewModel(
 
     fun getFollowers(name: String) {
         ApiConfig.getApiService().getFollowers(name).enqueue(object : Callback<List<GithubResponseItem>> {
+            override fun onResponse(
+                call: Call<List<GithubResponseItem>>,
+                response: Response<List<GithubResponseItem>>,
+            ) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    _githubResponse.value = responseBody
+                } else {
+                    Log.e(ContentValues.TAG,"On failure: ${response.message()}")
+                    // handle error here
+                }
+            }
+
+            override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
+                Log.e(ContentValues.TAG,"On failure: ${t.message}")
+                // handle error here
+            }
+        })
+    }
+
+    fun getFollowing(name: String) {
+        ApiConfig.getApiService().getFollowing(name).enqueue(object : Callback<List<GithubResponseItem>> {
             override fun onResponse(
                 call: Call<List<GithubResponseItem>>,
                 response: Response<List<GithubResponseItem>>,

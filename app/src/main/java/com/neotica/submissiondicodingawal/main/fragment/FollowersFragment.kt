@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
@@ -14,6 +15,7 @@ import com.neotica.submissiondicodingawal.main.MainAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
+import kotlinx.coroutines.launch
 
 class FollowersFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
@@ -35,12 +37,10 @@ class FollowersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-      //  lifecycleScope.launch { getUserViewModel() }
-        getUserViewModel()
+        lifecycleScope.launch { getUserViewModel() }
     }
 
     private fun showLoading(isLoading: Boolean) {
-        //Step 24: Declare the condition
         if (isLoading) {
             binding.progressBar.visibility = View.VISIBLE
         } else {

@@ -68,35 +68,6 @@ class UserFragment : Fragment() {
         }
     }
 
-    private fun getUser() {
-        showLoading(true)
-        val client = ApiConfig.getApiService().getUser()
-        client.enqueue(object : Callback<List<GithubResponseItem>> {
-            override fun onResponse(
-                call: Call<List<GithubResponseItem>>,
-                response: Response<List<GithubResponseItem>>,
-            ) {
-                showLoading(false)
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    navController = NavController(requireContext())
-                    setRecView(responseBody)
-                } else {
-                    Log.e(ContentValues.TAG,"On failure: ${response.message()}")
-                    Toast.makeText(context, "else ${response.message()}", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
-                showLoading(false)
-                Log.e(ContentValues.TAG,"On failure: ${t.message}")
-                Toast.makeText(context, "onfailure ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-
-
-        })
-    }
-
     private fun setRecView(listData: List<GithubResponseItem>?) {
         val adapter = listData?.let { MainAdapter(it) }
         binding.rvHomeList.apply {

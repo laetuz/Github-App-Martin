@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_userFragment_to_followersFragment2"
             app:destination="@id/followersFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_followingFragment"
+            app:destination="@id/followingFragment" />
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
@@ -51,5 +54,9 @@
     <fragment
         android:id="@+id/followingFragment"
         android:name="com.neotica.submissiondicodingawal.main.fragment.FollowingFragment"
-        android:label="FollowingFragment" />
+        android:label="FollowingFragment" >
+        <argument
+            android:name="profile"
+            app:argType="string" />
+    </fragment>
 </navigation>

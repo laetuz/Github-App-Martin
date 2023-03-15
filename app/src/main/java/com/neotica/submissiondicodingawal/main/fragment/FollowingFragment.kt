@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
@@ -17,15 +19,18 @@ import retrofit2.Callback
 import retrofit2.Response
 import androidx.navigation.NavController
 import com.neotica.submissiondicodingawal.main.MainAdapter
+import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
+import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 import com.neotica.submissiondicodingawal.retrofit.ApiConfig
+import kotlinx.coroutines.launch
 
 class FollowingFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
     private lateinit var navController: NavController
+    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -39,11 +44,10 @@ class FollowingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getUser()
+        lifecycleScope.launch { getFollowing() }
     }
 
     private fun showLoading(isLoading: Boolean) {
-        //Step 24: Declare the condition
         if (isLoading) {
             binding.progressBar.visibility = View.VISIBLE
         } else {
@@ -51,36 +55,24 @@ class FollowingFragment : Fragment() {
         }
     }
 
-    private fun getUser() {
+    private fun getFollowing(){
         showLoading(true)
-        val client = ApiConfig.getApiService().getUser()
-        client.enqueue(object : Callback<List<GithubResponseItem>> {
-            override fun onResponse(
-                call: Call<List<GithubResponseItem>>,
-                response: Response<List<GithubResponseItem>>,
-            ) {
+        val following = requireParentFragment().arguments?.let {
+            FollowingFragmentArgs.fromBundle(it)
+        }?.profile
+        if (following != null){
+            viewModel.getFollowing(following)
+        }
+        viewModel.githubResponse.observe(viewLifecycleOwner) {
+            github ->
+            if (github != null) {
                 showLoading(false)
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    navController = NavController(requireContext())
-                    setRecView(responseBody, navController)
-                } else {
-                    Log.e(ContentValues.TAG,"On failure: ${response.message()}")
-                    Toast.makeText(context, "else ${response.message()}", Toast.LENGTH_SHORT).show()
-                }
+                setRecView(github)
             }
-
-            override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
-                showLoading(false)
-                Log.e(ContentValues.TAG,"On failure: ${t.message}")
-                Toast.makeText(context, "onfailure ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-
-
-        })
+        }
     }
 
-    private fun setRecView(listData: List<GithubResponseItem>?, navController: NavController) {
+    private fun setRecView(listData: List<GithubResponseItem>?) {
         val adapter = listData?.let { MainAdapter(it) }
         val layoutManager = LinearLayoutManager(context)
         binding.apply {
