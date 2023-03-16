@@ -4,7 +4,6 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,10 +11,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.neotica.submissiondicodingawal.R
-import com.neotica.submissiondicodingawal.main.fragment.adapter.UserFragmentAdapter
+import com.neotica.submissiondicodingawal.main.fragment.adapter.UserAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 
@@ -37,7 +35,6 @@ class UserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         getUserViewModel()
-        //searchUser()
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -61,7 +58,7 @@ class UserFragment : Fragment() {
     }
 
     private fun setRecView(listData: List<GithubResponseItem>?) {
-        val adapter = listData?.let { UserFragmentAdapter(it) }
+        val adapter = listData?.let { UserAdapter(it) }
         binding.rvHomeList.apply {
             layoutManager=LinearLayoutManager(context)
             this.adapter = adapter
@@ -85,40 +82,15 @@ class UserFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val profile = query.toString()
                 val navController = Navigation.findNavController(binding.root)
-            //    Toast.makeText(context, search, Toast.LENGTH_SHORT).show()
-
                 val sendBundle =
                     UserFragmentDirections.actionUserFragmentToSearchFragment(profile)
                 navController.navigate(sendBundle)
 
                 return true
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
-
         })
-    }
-
-    private fun searchUser(){
-        val searchArgs = UserFragmentArgs.fromBundle(arguments as Bundle).search
-        Toast.makeText(context, searchArgs, Toast.LENGTH_SHORT).show()
-        viewModel.getSearch(searchArgs)
-        viewModel.githubResponse.observe(viewLifecycleOwner) {github ->
-            if (github != null) {
-                showLoading(false)
-                setSearchRecView(github)
-            }
-        }
-    }
-
-    private fun setSearchRecView(listData: List<GithubResponseItem>?){
-        val adapter = listData?.let { UserFragmentAdapter(it) }
-        binding.apply {
-            rvHomeList.adapter = adapter
-            rvHomeList.layoutManager = LinearLayoutManager(context)
-        }
-        listData?.get(0)
     }
 }

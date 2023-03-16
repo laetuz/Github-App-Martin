@@ -13,8 +13,8 @@ import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import java.util.*
 
 
-class UserFragmentAdapter(private val users: List<GithubResponseItem>) :
-    RecyclerView.Adapter<UserFragmentAdapter.ListViewHolder>() {
+class UserAdapter(private val users: List<GithubResponseItem>) :
+    RecyclerView.Adapter<UserAdapter.ListViewHolder>() {
 
     class ListViewHolder(private val binding: IvUserListBinding) :
         RecyclerView.ViewHolder(binding.root) {

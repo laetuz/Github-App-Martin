@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import androidx.navigation.NavController
-import com.neotica.submissiondicodingawal.main.fragment.adapter.UserFragmentAdapter
+import com.neotica.submissiondicodingawal.main.fragment.adapter.UserAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 import kotlinx.coroutines.launch
@@ -64,7 +64,7 @@ class FollowingFragment : Fragment() {
     }
 
     private fun setRecView(listData: List<GithubResponseItem>?) {
-        val adapter = listData?.let { UserFragmentAdapter(it) }
+        val adapter = listData?.let { UserAdapter(it) }
         val layoutManager = LinearLayoutManager(context)
         binding.apply {
             rvHomeList.layoutManager = layoutManager

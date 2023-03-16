@@ -1,6 +1,4 @@
-package com.neotica.submissiondicodingawal.response.testing
-
-import com.neotica.submissiondicodingawal.response.GithubResponseItem
+package com.neotica.submissiondicodingawal.response
 
 data class SearchResponse(
     val incomplete_results: Boolean,

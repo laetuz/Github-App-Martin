@@ -5,21 +5,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neotica.submissiondicodingawal.databinding.LayoutProfileBinding
 import com.neotica.submissiondicodingawal.main.MainActivity
 import com.neotica.submissiondicodingawal.main.fragment.adapter.TabAdapter
+import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
+import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
+import com.neotica.submissiondicodingawal.response.UserDetailResponse
 import java.util.*
 
-class UserProfileFragment : Fragment() {
+class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment() {
     private lateinit var binding: LayoutProfileBinding
     private lateinit var tabAdapter:TabAdapter
     private val tabTitle = listOf(
         "Followers",
         "Following"
     )
+    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +42,8 @@ class UserProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindHEHE()
         viewPager()
+        bindHEHE()
     }
 
     private fun viewPager(){
@@ -58,6 +63,19 @@ class UserProfileFragment : Fragment() {
     private fun bindHEHE(){
         val avatar = UserProfileFragmentArgs.fromBundle(arguments as Bundle).avatar.toString()
         val profile = UserProfileFragmentArgs.fromBundle(arguments as Bundle).profile
+        viewModel.getUserDetail(profile)
+        viewModel.detailResponse.observe(viewLifecycleOwner){
+            github ->
+            if (github != null) {
+                val followers = github.followers.toString()
+                val following = github.following.toString()
+                binding.tvFollowers.text = "Followers: ${followers}"
+                binding.tvFollowing.text = "Following: ${following}"
+                binding.tvName.text = github.name
+            }
+        }
+
+
         binding.apply {
             Glide.with(root)
                 .load(avatar)
