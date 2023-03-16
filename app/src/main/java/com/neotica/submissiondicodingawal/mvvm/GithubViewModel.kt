@@ -92,4 +92,24 @@ class GithubViewModel(
             }
         })
     }
+
+    fun getSearch(query: String){
+        ApiConfig.getApiService().searchUser(query).enqueue(object : Callback<List<GithubResponseItem>> {
+            override fun onResponse(
+                call: Call<List<GithubResponseItem>>,
+                response: Response<List<GithubResponseItem>>
+            ) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    _githubResponse.value = responseBody
+                } else {
+                    Log.e(ContentValues.TAG,"On failure: ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
+                Log.e(ContentValues.TAG,"On failure: ${t.message}")
+            }
+
+        })
+    }
 }

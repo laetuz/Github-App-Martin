@@ -20,6 +20,16 @@
         <action
             android:id="@+id/action_userFragment_to_followingFragment"
             app:destination="@id/followingFragment" />
+        <action
+            android:id="@+id/action_userFragment_self"
+            app:destination="@id/userFragment" />
+        <argument
+            android:name="search"
+            app:argType="string"
+            android:defaultValue="laetuz"/>
+        <action
+            android:id="@+id/action_userFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
@@ -71,4 +81,8 @@
             android:id="@+id/action_followingFragment_self"
             app:destination="@id/followingFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.neotica.submissiondicodingawal.main.fragment.SearchFragment"
+        android:label="SearchFragment" />
 </navigation>

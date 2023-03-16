@@ -19,7 +19,7 @@ import com.neotica.submissiondicodingawal.main.fragment.adapter.UserFragmentAdap
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 
-class UserFragment : Fragment() {
+class SearchFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
 
     private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
@@ -41,8 +41,8 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        getUserViewModel()
-        //searchUser()
+        //getUserViewModel()
+        searchUser()
     }
 
     private fun showLoading(isLoading: Boolean) {

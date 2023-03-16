@@ -4,6 +4,7 @@ import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     //  @Headers("Authorization: token 4c5b087d8f967fdfda3cbc967eca7ae13c33428d")
@@ -20,9 +21,14 @@ interface ApiService {
         @Path("login")login: String
     ): Call<List<GithubResponseItem>>
 
-    @GET("search/users?q={login}")
+/*    @GET("search/users?q={login}")
     fun searchUser(
         @Path("login")login: String
+    ): Call<List<GithubResponseItem>>*/
+
+    @GET("search/users")
+    fun searchUser(
+        @Query("q")login: String
     ): Call<List<GithubResponseItem>>
 
     @GET("users")
