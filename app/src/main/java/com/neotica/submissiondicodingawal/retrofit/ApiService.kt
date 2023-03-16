@@ -1,6 +1,8 @@
 package com.neotica.submissiondicodingawal.retrofit
 
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
+import com.neotica.submissiondicodingawal.response.testing.Item
+import com.neotica.submissiondicodingawal.response.testing.SearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -10,6 +12,8 @@ interface ApiService {
     //  @Headers("Authorization: token 4c5b087d8f967fdfda3cbc967eca7ae13c33428d")
     @GET("users")
     fun getUser(): Call<List<GithubResponseItem>>
+
+    //@GET("searc")
 
     @GET("users/{login}/followers")
     fun getFollowers(
@@ -29,7 +33,7 @@ interface ApiService {
     @GET("search/users")
     fun searchUser(
         @Query("q")login: String
-    ): Call<List<GithubResponseItem>>
+    ): Call<SearchResponse>
 
     @GET("users")
     fun getUsername(): GithubResponseItem

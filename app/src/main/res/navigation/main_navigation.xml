@@ -84,5 +84,9 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.neotica.submissiondicodingawal.main.fragment.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment" >
+        <argument
+            android:name="profile"
+            app:argType="string"/>
+    </fragment>
 </navigation>

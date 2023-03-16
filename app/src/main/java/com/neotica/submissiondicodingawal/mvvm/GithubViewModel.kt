@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neotica.submissiondicodingawal.response.GithubResponse
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
+import com.neotica.submissiondicodingawal.response.testing.Item
+import com.neotica.submissiondicodingawal.response.testing.SearchResponse
 import com.neotica.submissiondicodingawal.retrofit.ApiConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -94,22 +96,22 @@ class GithubViewModel(
     }
 
     fun getSearch(query: String){
-        ApiConfig.getApiService().searchUser(query).enqueue(object : Callback<List<GithubResponseItem>> {
+        ApiConfig.getApiService().searchUser(query).enqueue(object : Callback<SearchResponse>{
             override fun onResponse(
-                call: Call<List<GithubResponseItem>>,
-                response: Response<List<GithubResponseItem>>
+                call: Call<SearchResponse>,
+                response: Response<SearchResponse>
             ) {
-                if (response.isSuccessful) {
+                if (response.isSuccessful){
                     val responseBody = response.body()
-                    _githubResponse.value = responseBody
+                    _githubResponse.value = responseBody?.items
                 } else {
-                    Log.e(ContentValues.TAG,"On failure: ${response.message()}")
+                    Log.e(ContentValues.TAG, "Search failure: ${response.message()}")
                 }
             }
-            override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
-                Log.e(ContentValues.TAG,"On failure: ${t.message}")
-            }
 
+            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                Log.e(ContentValues.TAG, "Search : ${t.message}")
+            }
         })
     }
 }

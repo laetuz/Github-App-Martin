@@ -24,11 +24,6 @@ class UserFragment : Fragment() {
 
     private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -88,11 +83,13 @@ class UserFragment : Fragment() {
         searchView.queryHint = resources.getString(androidx.appcompat.R.string.abc_search_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                val search = query.toString()
+                val profile = query.toString()
                 val navController = Navigation.findNavController(binding.root)
-                Toast.makeText(context, search, Toast.LENGTH_SHORT).show()
-                val sendBundle = UserFragmentDirections.actionUserFragmentSelf()
-                navController.navigate(UserFragmentDirections.actionUserFragmentSelf())
+            //    Toast.makeText(context, search, Toast.LENGTH_SHORT).show()
+
+                val sendBundle =
+                    UserFragmentDirections.actionUserFragmentToSearchFragment(profile)
+                navController.navigate(sendBundle)
 
                 return true
             }

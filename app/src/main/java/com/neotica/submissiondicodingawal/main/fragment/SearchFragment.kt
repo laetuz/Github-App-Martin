@@ -24,11 +24,6 @@ class SearchFragment : Fragment() {
 
     private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,7 +35,6 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
         //getUserViewModel()
         searchUser()
     }
@@ -55,6 +49,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun getUserViewModel(){
+        val searchArgs = SearchFragmentArgs.fromBundle(arguments as Bundle).profile
+        Toast.makeText(context, searchArgs, Toast.LENGTH_SHORT).show()
         showLoading(true)
         viewModel.getUser()
         viewModel.githubResponse.observe(viewLifecycleOwner) { github ->
@@ -105,7 +101,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun searchUser(){
-        val searchArgs = UserFragmentArgs.fromBundle(arguments as Bundle).search
+        val searchArgs = SearchFragmentArgs.fromBundle(arguments as Bundle).profile
         Toast.makeText(context, searchArgs, Toast.LENGTH_SHORT).show()
         viewModel.getSearch(searchArgs)
         viewModel.githubResponse.observe(viewLifecycleOwner) {github ->
