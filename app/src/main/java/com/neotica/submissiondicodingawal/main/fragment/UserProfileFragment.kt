@@ -26,11 +26,6 @@ class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment
     )
     private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,17 +55,28 @@ class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment
         }
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        //Step 24: Declare the condition
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
     private fun bindHEHE(){
+        showLoading(true)
         val avatar = UserProfileFragmentArgs.fromBundle(arguments as Bundle).avatar.toString()
         val profile = UserProfileFragmentArgs.fromBundle(arguments as Bundle).profile
         viewModel.getUserDetail(profile)
         viewModel.detailResponse.observe(viewLifecycleOwner){
             github ->
+            showLoading(false)
             if (github != null) {
                 val followers = github.followers.toString()
                 val following = github.following.toString()
-                binding.tvFollowers.text = "Followers: ${followers}"
-                binding.tvFollowing.text = "Following: ${following}"
+                binding.tvFollowers.text = "Followers: $followers"
+                binding.tvFollowing.text = "Following: $following"
                 binding.tvName.text = github.name
             }
         }

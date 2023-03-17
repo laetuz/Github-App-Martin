@@ -38,7 +38,6 @@ class UserFragment : Fragment() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        //Step 24: Declare the condition
         if (isLoading) {
             binding.progressBar.visibility = View.VISIBLE
         } else {

@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -48,14 +49,8 @@ class FollowersAdapter(private val users: List<GithubResponseItem>) :
         val profile = users[position].login
         val followers = users[position].followers_url
         val following = users[position].following_url
-/*        holder.itemView.setOnClickListener { view ->
-            val action = FollowersFragmentDirections.actionFollowersFragmentToUserProfileFragment(
-                avatar, profile, followers, following
-            )
-            val actionSelf = FollowersFragmentDirections.actionFollowersFragmentSelf(
-                avatar, profile
-            )
-            view.findNavController().navigate(actionSelf)
-        }*/
+        holder.itemView.setOnClickListener {
+            Toast.makeText(holder.itemView.context, "Silahkan Ke homescreen dan search $profile", Toast.LENGTH_SHORT).show()
+        }
     }
 }

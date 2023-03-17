@@ -20,11 +20,6 @@ class FollowersFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
     private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

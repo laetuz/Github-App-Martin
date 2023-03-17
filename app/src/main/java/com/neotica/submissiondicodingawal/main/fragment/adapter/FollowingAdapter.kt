@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -46,5 +47,8 @@ class FollowingAdapter(private val users: List<GithubResponseItem>) :
         holder.bindData(users[position])
         val avatar = users[position].avatar_url
         val username = users[position].login
+        holder.itemView.setOnClickListener {
+            Toast.makeText(holder.itemView.context, "Silahkan Ke homescreen dan search $username", Toast.LENGTH_SHORT).show()
+        }
     }
 }
