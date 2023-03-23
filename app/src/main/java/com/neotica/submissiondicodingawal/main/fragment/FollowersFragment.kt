@@ -69,6 +69,5 @@ class FollowersFragment : Fragment() {
             val itemDivider = DividerItemDecoration(context, layoutManager.orientation)
             rvHomeList.addItemDecoration(itemDivider)
         }
-        listData?.get(0)
     }
 }

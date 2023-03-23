@@ -58,6 +58,5 @@ class SearchFragment : Fragment() {
             rvHomeList.adapter = adapter
             rvHomeList.layoutManager = LinearLayoutManager(context)
         }
-        listData?.get(0)
     }
 }

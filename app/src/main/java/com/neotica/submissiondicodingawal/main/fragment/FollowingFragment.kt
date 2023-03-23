@@ -11,7 +11,6 @@ import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import androidx.navigation.NavController
 import com.neotica.submissiondicodingawal.main.fragment.adapter.FollowingAdapter
-import com.neotica.submissiondicodingawal.main.fragment.adapter.UserAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 import kotlinx.coroutines.launch
@@ -69,6 +68,5 @@ class FollowingFragment : Fragment() {
             rvHomeList.addItemDecoration(itemDivider)
             rvHomeList.adapter = adapter
         }
-        listData?.get(0)
     }
 }
