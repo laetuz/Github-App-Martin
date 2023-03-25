@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -12,13 +13,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.R
+import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
+import com.neotica.submissiondicodingawal.main.fragment.adapter.FragmentType
 import com.neotica.submissiondicodingawal.main.fragment.adapter.UserAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
+import java.util.*
 
 class UserFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
+    private lateinit var itemList: IvUserListBinding
 
     private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
@@ -28,6 +35,7 @@ class UserFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = RvUserListBinding.inflate(layoutInflater, container, false)
+        itemList = IvUserListBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -37,27 +45,35 @@ class UserFragment : Fragment() {
         getUserViewModel()
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
+    private fun getUserViewModel(){
+        viewModel.getUser()
+        binding.progressBar.isVisible = true
+        viewModel.githubResponse.observe(viewLifecycleOwner) {
+            if (it?.isNotEmpty() == true) {
+                bindData(it[0])
+                setRecView(it)
+            }
+            viewModel.isLoading.observe(viewLifecycleOwner){
+                binding.progressBar.isVisible = it
+            }
         }
     }
-
-    private fun getUserViewModel(){
-        showLoading(true)
-        viewModel.getUser()
-        viewModel.githubResponse.observe(viewLifecycleOwner) { github ->
-            if (github != null) {
-                showLoading(false)
-                setRecView(github)
-            }
+    private fun bindData(listUser: GithubResponseItem) {
+        itemList.apply {
+            tvUsername.text = listUser.login
+                .replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase(
+                        Locale.ROOT
+                    ) else it.toString()
+                }
+            Glide.with(root)
+                .load(listUser.avatar_url)
+                .into(ivProfile)
         }
     }
 
     private fun setRecView(listData: List<GithubResponseItem>?) {
-        val adapter = listData?.let { UserAdapter(it) }
+        val adapter = listData?.let { UserAdapter(it, FragmentType.USERS_FRAGMENT) }
         binding.rvHomeList.apply {
             layoutManager=LinearLayoutManager(context)
             this.adapter = adapter

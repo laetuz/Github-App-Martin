@@ -2,6 +2,7 @@ package com.neotica.submissiondicodingawal.main.fragment
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +12,8 @@ import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import androidx.navigation.NavController
 import com.neotica.submissiondicodingawal.main.fragment.adapter.FollowingAdapter
+import com.neotica.submissiondicodingawal.main.fragment.adapter.FragmentType
+import com.neotica.submissiondicodingawal.main.fragment.adapter.UserAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 import kotlinx.coroutines.launch
@@ -19,6 +22,10 @@ class FollowingFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
     private lateinit var navController: NavController
     private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +74,9 @@ class FollowingFragment : Fragment() {
             val itemDivider = DividerItemDecoration(context, layoutManager.orientation)
             rvHomeList.addItemDecoration(itemDivider)
             rvHomeList.adapter = adapter
+        }
+        if (listData == null){
+            Toast.makeText(context, "data is zero", Toast.LENGTH_SHORT).show()
         }
     }
 }

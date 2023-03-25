@@ -48,7 +48,7 @@ class FollowingAdapter(private val users: List<GithubResponseItem>) :
         val avatar = users[position].avatar_url
         val username = users[position].login
         holder.itemView.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "Silahkan Ke homescreen dan search $username", Toast.LENGTH_SHORT).show()
+            Toast.makeText(holder.itemView.context, "Search $username on Home screen", Toast.LENGTH_SHORT).show()
         }
     }
 }

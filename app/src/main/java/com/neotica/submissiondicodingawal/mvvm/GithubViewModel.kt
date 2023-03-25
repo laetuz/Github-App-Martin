@@ -21,6 +21,9 @@ class GithubViewModel(
     val githubResponse: LiveData<List<GithubResponseItem>?> = _githubResponse
     private val _detailResponse = MutableLiveData<UserDetailResponse?>()
     val detailResponse: LiveData<UserDetailResponse?> = _detailResponse
+    val isLoading: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(false)
+    }
 
     fun getUser() {
         ApiConfig.getApiService().getUser().enqueue(object : Callback<List<GithubResponseItem>> {
@@ -29,8 +32,8 @@ class GithubViewModel(
                 response: Response<List<GithubResponseItem>>,
             ) {
                 if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    _githubResponse.value = responseBody
+                    _githubResponse.value = response.body()
+                    isLoading.value = false
                 } else {
                     Log.e(ContentValues.TAG, "On failure: ${response.message()}")
                 }
@@ -42,20 +45,21 @@ class GithubViewModel(
         })
     }
 
-    fun getUserDetail(name: String){
-        ApiConfig.getApiService().getUserDetail(name)
-            .enqueue(object: Callback<UserDetailResponse>{
+    fun getUserDetail(name: String) {
+        ApiConfig.getApiService().getUserDetail(name.ifEmpty { "null" })
+            .enqueue(object : Callback<UserDetailResponse> {
                 override fun onResponse(
                     call: Call<UserDetailResponse>,
                     response: Response<UserDetailResponse>
                 ) {
-                    if (response.isSuccessful){
+                    if (response.isSuccessful) {
                         val responseBody = response.body()
                         _detailResponse.value = responseBody
-                    } else{
+                    } else {
                         Log.e(ContentValues.TAG, response.message())
                     }
                 }
+
                 override fun onFailure(call: Call<UserDetailResponse>, t: Throwable) {
                     t.message?.let { Log.e(ContentValues.TAG, it) }
                 }
@@ -63,7 +67,7 @@ class GithubViewModel(
     }
 
     fun getFollowers(name: String) {
-        ApiConfig.getApiService().getFollowers(name)
+        ApiConfig.getApiService().getFollowers(name.ifEmpty { "null" })
             .enqueue(object : Callback<List<GithubResponseItem>> {
                 override fun onResponse(
                     call: Call<List<GithubResponseItem>>,
@@ -76,6 +80,7 @@ class GithubViewModel(
                         Log.e(ContentValues.TAG, "On failure: ${response.message()}")
                     }
                 }
+
                 override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
                     Log.e(ContentValues.TAG, "On failure: ${t.message}")
                 }
@@ -83,7 +88,7 @@ class GithubViewModel(
     }
 
     fun getFollowing(name: String) {
-        ApiConfig.getApiService().getFollowing(name)
+        ApiConfig.getApiService().getFollowing(name.ifEmpty { "null" })
             .enqueue(object : Callback<List<GithubResponseItem>> {
                 override fun onResponse(
                     call: Call<List<GithubResponseItem>>,
@@ -96,6 +101,7 @@ class GithubViewModel(
                         Log.e(ContentValues.TAG, "On failure: ${response.message()}")
                     }
                 }
+
                 override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
                     Log.e(ContentValues.TAG, "On failure: ${t.message}")
                 }
@@ -103,7 +109,7 @@ class GithubViewModel(
     }
 
     fun getSearch(query: String) {
-        ApiConfig.getApiService().searchUser(query).enqueue(object : Callback<SearchResponse> {
+        ApiConfig.getApiService().searchUser(query.ifEmpty { "null" }).enqueue(object : Callback<SearchResponse> {
             override fun onResponse(
                 call: Call<SearchResponse>,
                 response: Response<SearchResponse>

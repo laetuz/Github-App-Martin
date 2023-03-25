@@ -15,12 +15,6 @@
             app:popUpTo="@id/userProfileFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_userFragment_to_followersFragment2"
-            app:destination="@id/followersFragment" />
-        <action
-            android:id="@+id/action_userFragment_to_followingFragment"
-            app:destination="@id/followingFragment" />
-        <action
             android:id="@+id/action_userFragment_self"
             app:destination="@id/userFragment" />
         <argument
@@ -48,6 +42,9 @@
         <argument
             android:name="following"
             app:argType="string" />
+        <action
+            android:id="@+id/action_userProfileFragment_self"
+            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/followersFragment"
@@ -61,9 +58,6 @@
             android:name="profile"
             app:argType="string" />
         <action
-            android:id="@+id/action_followersFragment_to_userProfileFragment"
-            app:destination="@id/userProfileFragment" />
-        <action
             android:id="@+id/action_followersFragment_self"
             app:destination="@id/followersFragment" />
     </fragment>
@@ -72,11 +66,17 @@
         android:name="com.neotica.submissiondicodingawal.main.fragment.FollowingFragment"
         android:label="FollowingFragment" >
         <argument
+            android:name="avatar"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
             android:name="profile"
             app:argType="string" />
         <action
             android:id="@+id/action_followingFragment_to_userProfileFragment"
-            app:destination="@id/userProfileFragment" />
+            app:destination="@id/userProfileFragment"
+            app:popUpTo="@id/userProfileFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_followingFragment_self"
             app:destination="@id/followingFragment" />
@@ -91,12 +91,6 @@
         <action
             android:id="@+id/action_searchFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_followingFragment"
-            app:destination="@id/followingFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_followersFragment"
-            app:destination="@id/followersFragment" />
         <action
             android:id="@+id/action_searchFragment_to_userProfileFragment2"
             app:destination="@id/userProfileFragment" />
