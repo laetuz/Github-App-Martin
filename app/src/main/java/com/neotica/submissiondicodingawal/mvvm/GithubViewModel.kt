@@ -25,25 +25,7 @@ class GithubViewModel(
         MutableLiveData<Boolean>(false)
     }
 
-    fun getUser() {
-        ApiConfig.getApiService().getUser().enqueue(object : Callback<List<GithubResponseItem>> {
-            override fun onResponse(
-                call: Call<List<GithubResponseItem>>,
-                response: Response<List<GithubResponseItem>>,
-            ) {
-                if (response.isSuccessful) {
-                    _githubResponse.value = response.body()
-                    isLoading.value = false
-                } else {
-                    Log.e(ContentValues.TAG, "On failure: ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
-                Log.e(ContentValues.TAG, "On failure: ${t.message}")
-            }
-        })
-    }
+    fun getUser() = githubRepo.getUser()
 
     fun getUserDetail(name: String) {
         ApiConfig.getApiService().getUserDetail(name.ifEmpty { "null" })
