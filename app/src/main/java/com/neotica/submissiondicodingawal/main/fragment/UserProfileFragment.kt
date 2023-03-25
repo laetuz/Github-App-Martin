@@ -1,11 +1,13 @@
 package com.neotica.submissiondicodingawal.main.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
@@ -25,6 +27,11 @@ class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment
         "Following"
     )
     private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,23 +62,13 @@ class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment
         }
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        //Step 24: Declare the condition
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
-    }
-
+    @SuppressLint("SetTextI18n")
     private fun bindHEHE(){
-        showLoading(true)
         val avatar = UserProfileFragmentArgs.fromBundle(arguments as Bundle).avatar.toString()
         val profile = UserProfileFragmentArgs.fromBundle(arguments as Bundle).profile
         viewModel.getUserDetail(profile)
         viewModel.detailResponse.observe(viewLifecycleOwner){
             github ->
-            showLoading(false)
             if (github != null) {
                 val followers = github.followers.toString()
                 val following = github.following.toString()
