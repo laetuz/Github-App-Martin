@@ -2,6 +2,7 @@ package com.neotica.submissiondicodingawal.main.fragment
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import androidx.navigation.NavController
+import com.neotica.submissiondicodingawal.main.fragment.adapter.FragmentType
 import com.neotica.submissiondicodingawal.main.fragment.adapter.UserAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
@@ -64,7 +66,7 @@ class FollowingFragment : Fragment() {
     }
 
     private fun setRecView(listData: List<GithubResponseItem>?) {
-        val adapter = listData?.let { UserAdapter(it) }
+        val adapter = listData?.let { UserAdapter(it, FragmentType.USERS_FRAGMENT) }
         val layoutManager = LinearLayoutManager(context)
         binding.apply {
             rvHomeList.layoutManager = layoutManager
@@ -72,6 +74,8 @@ class FollowingFragment : Fragment() {
             rvHomeList.addItemDecoration(itemDivider)
             rvHomeList.adapter = adapter
         }
-        listData?.get(0)
+        if (listData == null){
+            Toast.makeText(context, "data is zero", Toast.LENGTH_SHORT).show()
+        }
     }
 }

@@ -1,11 +1,13 @@
 package com.neotica.submissiondicodingawal.main.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
@@ -60,6 +62,7 @@ class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindHEHE(){
         val avatar = UserProfileFragmentArgs.fromBundle(arguments as Bundle).avatar.toString()
         val profile = UserProfileFragmentArgs.fromBundle(arguments as Bundle).profile
@@ -69,8 +72,8 @@ class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment
             if (github != null) {
                 val followers = github.followers.toString()
                 val following = github.following.toString()
-                binding.tvFollowers.text = "Followers: ${followers}"
-                binding.tvFollowing.text = "Following: ${following}"
+                binding.tvFollowers.text = "Followers: $followers"
+                binding.tvFollowing.text = "Following: $following"
                 binding.tvName.text = github.name
             }
         }
