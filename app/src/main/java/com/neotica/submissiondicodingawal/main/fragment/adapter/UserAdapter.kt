@@ -1,15 +1,19 @@
 package com.neotica.submissiondicodingawal.main.fragment.adapter
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.main.fragment.UserFragmentDirections
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
+import com.neotica.submissiondicodingawal.room.Entity
 import java.util.*
 
 enum class FragmentType {
@@ -17,8 +21,9 @@ enum class FragmentType {
     DETAILS_FRAGMENT
 }
 
-class UserAdapter(private val users: List<GithubResponseItem>, usersFragment: FragmentType) :
-    RecyclerView.Adapter<UserAdapter.ListViewHolder>() {
+class UserAdapter(private val users: List<GithubResponseItem>) : ListAdapter<Entity, UserAdapter.ListViewHolder>(DIFF_CALLBACK)
+    //RecyclerView.Adapter<UserAdapter.ListViewHolder>()
+{
 
     class ListViewHolder(private val binding: IvUserListBinding, private val fragmentType: FragmentType) :
         RecyclerView.ViewHolder(binding.root) {
@@ -40,6 +45,7 @@ class UserAdapter(private val users: List<GithubResponseItem>, usersFragment: Fr
                         it.findNavController().navigate(action)
                     }
                 }*/
+           //     if (listUser.is)
             }
         }
     }
@@ -67,5 +73,22 @@ class UserAdapter(private val users: List<GithubResponseItem>, usersFragment: Fr
                 )
             view.findNavController().navigate(action)
         }
+        //Set Bookmarks
+        val currentPos = users[position]
+       // if (currentPos.is)
+    }
+
+    companion object{
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<Entity> =
+            object : DiffUtil.ItemCallback<Entity>() {
+                override fun areItemsTheSame(oldItem: Entity, newItem: Entity): Boolean {
+                    return oldItem.username == newItem.username
+                }
+
+                @SuppressLint("DiffUtilEquals")
+                override fun areContentsTheSame(oldItem: Entity, newItem: Entity): Boolean {
+                    return oldItem == newItem
+                }
+            }
     }
 }

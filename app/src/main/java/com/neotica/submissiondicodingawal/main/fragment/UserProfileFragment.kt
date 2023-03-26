@@ -26,7 +26,6 @@ class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment
         "Followers",
         "Following"
     )
-    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +63,8 @@ class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment
 
     @SuppressLint("SetTextI18n")
     private fun bindHEHE(){
+        val factory: GithubViewModelFactory =GithubViewModelFactory.getInstance(requireContext())
+        val viewModel: GithubViewModel by viewModels { factory }
         val avatar = UserProfileFragmentArgs.fromBundle(arguments as Bundle).avatar.toString()
         val profile = UserProfileFragmentArgs.fromBundle(arguments as Bundle).profile
         viewModel.getUserDetail(profile)

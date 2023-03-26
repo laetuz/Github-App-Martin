@@ -15,8 +15,6 @@ import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 class SearchFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
 
-    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +38,8 @@ class SearchFragment : Fragment() {
 
     /*---------------SEARCH----------------*/
     private fun searchUser() {
+        val factory: GithubViewModelFactory =GithubViewModelFactory.getInstance(requireContext())
+        val viewModel: GithubViewModel by viewModels { factory }
         showLoading(true)
         val searchArgs = SearchFragmentArgs.fromBundle(arguments as Bundle).profile
         Toast.makeText(context, searchArgs, Toast.LENGTH_SHORT).show()

@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 class FollowingFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
     private lateinit var navController: NavController
-    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +49,8 @@ class FollowingFragment : Fragment() {
     }
 
     private fun getFollowing(){
+        val factory: GithubViewModelFactory =GithubViewModelFactory.getInstance(requireContext())
+        val viewModel: GithubViewModel by viewModels { factory }
         showLoading(true)
         val following = requireParentFragment().arguments?.let {
             FollowingFragmentArgs.fromBundle(it)

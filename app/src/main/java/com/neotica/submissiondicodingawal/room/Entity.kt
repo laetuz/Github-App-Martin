@@ -11,5 +11,5 @@ class Entity (
     @field:ColumnInfo("imageUrl")
     val imageUrl: String? = null,
     @field:ColumnInfo("bookmarked")
-    val isBookmarked: Boolean
+    var isBookmarked: Boolean
 )

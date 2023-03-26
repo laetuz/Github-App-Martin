@@ -20,7 +20,6 @@ import kotlinx.coroutines.launch
 
 class FollowersFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
-    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +55,8 @@ class FollowersFragment : Fragment() {
     }
 
     private fun getFollowers() {
+        val factory: GithubViewModelFactory =GithubViewModelFactory.getInstance(requireContext())
+        val viewModel: GithubViewModel by viewModels { factory }
         showLoading(true)
         val test = requireParentFragment().arguments?.let {
             FollowersFragmentArgs.fromBundle(it)

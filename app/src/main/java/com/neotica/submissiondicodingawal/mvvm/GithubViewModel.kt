@@ -9,6 +9,7 @@ import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import com.neotica.submissiondicodingawal.response.SearchResponse
 import com.neotica.submissiondicodingawal.response.UserDetailResponse
 import com.neotica.submissiondicodingawal.retrofit.ApiConfig
+import com.neotica.submissiondicodingawal.room.Entity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,6 +27,33 @@ class GithubViewModel(
     }
 
     fun getUser() = githubRepo.getUser()
+    fun getBookmarks()=githubRepo.getBookmarks()
+    fun setBookmarks(github: Entity){
+        githubRepo.setBookmarks(github,true)
+    }
+    fun deleteBookmarks(github: Entity){
+        githubRepo.setBookmarks(github, false)
+    }
+
+    fun getUser2() {
+        ApiConfig.getApiService().getUser().enqueue(object : Callback<List<GithubResponseItem>> {
+            override fun onResponse(
+                call: Call<List<GithubResponseItem>>,
+                response: Response<List<GithubResponseItem>>,
+            ) {
+                if (response.isSuccessful) {
+                    _githubResponse.value = response.body()
+                    isLoading.value = false
+                } else {
+                    Log.e(ContentValues.TAG, "On failure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
+                Log.e(ContentValues.TAG, "On failure: ${t.message}")
+            }
+        })
+    }
 
     fun getUserDetail(name: String) {
         ApiConfig.getApiService().getUserDetail(name.ifEmpty { "null" })

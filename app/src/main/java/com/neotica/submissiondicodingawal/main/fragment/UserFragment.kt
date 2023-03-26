@@ -27,7 +27,7 @@ class UserFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
     private lateinit var itemList: IvUserListBinding
 
-    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
+   // private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,12 +41,26 @@ class UserFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+      //  val factory: GithubViewModelFactory =GithubViewModelFactory.getInstance(requireContext())
+      //  val viewModel: GithubViewModel by viewModels { factory }
         setHasOptionsMenu(true)
         getUserViewModel()
     }
 
     private fun getUserViewModel(){
+        val factory: GithubViewModelFactory =GithubViewModelFactory.getInstance(requireContext())
+        val viewModel: GithubViewModel by viewModels { factory }
         viewModel.getUser()
+        viewModel.getUser().observe(viewLifecycleOwner){
+            if (it?.isNotEmpty() == true) {
+                bindData(it[0])
+                setRecView(it)
+            }
+            viewModel.isLoading.observe(viewLifecycleOwner){
+                binding.progressBar.isVisible = it
+            }
+        }
+        viewModel.getUser2()
         binding.progressBar.isVisible = true
         viewModel.githubResponse.observe(viewLifecycleOwner) {
             if (it?.isNotEmpty() == true) {
@@ -73,7 +87,10 @@ class UserFragment : Fragment() {
     }
 
     private fun setRecView(listData: List<GithubResponseItem>?) {
-        val adapter = listData?.let { UserAdapter(it, FragmentType.USERS_FRAGMENT) }
+       /* val gitAdapter = UserAdapter{
+            if (it)
+        }*/
+        val adapter = listData?.let { UserAdapter(it) }
         binding.rvHomeList.apply {
             layoutManager=LinearLayoutManager(context)
             this.adapter = adapter
