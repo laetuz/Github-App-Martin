@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.neotica.submissiondicodingawal.mvvm.Constants.API_TOKEN
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import com.neotica.submissiondicodingawal.response.SearchResponse
 import com.neotica.submissiondicodingawal.response.UserDetailResponse
@@ -22,7 +23,7 @@ class SearchViewModel(
     val detailResponse: LiveData<UserDetailResponse?> = _detailResponse
 
     fun getSearch(query: String) {
-        ApiConfig.getApiService().searchUser(query.ifEmpty { "null" }).enqueue(object : Callback<SearchResponse> {
+        ApiConfig.getApiService().searchUser(API_TOKEN,query.ifEmpty { "null" }).enqueue(object : Callback<SearchResponse> {
             override fun onResponse(
                 call: Call<SearchResponse>,
                 response: Response<SearchResponse>
