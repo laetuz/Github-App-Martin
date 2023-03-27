@@ -15,13 +15,13 @@ import com.neotica.submissiondicodingawal.main.fragment.adapter.FollowingAdapter
 import com.neotica.submissiondicodingawal.main.fragment.adapter.FragmentType
 import com.neotica.submissiondicodingawal.main.fragment.adapter.UserAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FollowingFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
     private lateinit var navController: NavController
-    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
+    private val viewModel : GithubViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

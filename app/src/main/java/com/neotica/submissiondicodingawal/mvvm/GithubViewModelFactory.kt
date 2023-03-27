@@ -1,3 +1,4 @@
+/*
 package com.neotica.submissiondicodingawal.mvvm
 
 import androidx.lifecycle.ViewModel
@@ -11,4 +12,4 @@ object GithubViewModelFactory:ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return GithubViewModel() as T
     }
-}
+}*/

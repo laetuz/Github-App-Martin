@@ -7,27 +7,25 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.R
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
 import com.neotica.submissiondicodingawal.main.fragment.adapter.FragmentType
 import com.neotica.submissiondicodingawal.main.fragment.adapter.UserAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 class UserFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
     private lateinit var itemList: IvUserListBinding
 
-    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
+    private val viewModel : GithubViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

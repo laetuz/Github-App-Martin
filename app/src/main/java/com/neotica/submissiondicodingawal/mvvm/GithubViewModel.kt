@@ -18,9 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class GithubViewModel(
-    private val apiService: ApiService,
-    private val dao: Dao,
-    private val appExecutors: AppExecutors
+    private val apiService: ApiService
 ) : ViewModel() {
     //LiveData
     private val _githubResponse = MutableLiveData<List<GithubResponseItem>?>()
@@ -32,7 +30,7 @@ class GithubViewModel(
     }
 
     fun getUser() {
-        ApiConfig.getApiService().getUser(API_TOKEN)
+        apiService.getUser()
             .enqueue(object : Callback<List<GithubResponseItem>> {
                 override fun onResponse(
                     call: Call<List<GithubResponseItem>>,
@@ -53,7 +51,7 @@ class GithubViewModel(
     }
 
     fun getUserDetail(name: String) {
-        ApiConfig.getApiService().getUserDetail(API_TOKEN, name.ifEmpty { "null" })
+        apiService.getUserDetail(name.ifEmpty { "null" })
             .enqueue(object : Callback<UserDetailResponse> {
                 override fun onResponse(
                     call: Call<UserDetailResponse>,
@@ -74,7 +72,7 @@ class GithubViewModel(
     }
 
     fun getFollowers(name: String) {
-        ApiConfig.getApiService().getFollowers(API_TOKEN, name.ifEmpty { "null" })
+        apiService.getFollowers(name.ifEmpty { "null" })
             .enqueue(object : Callback<List<GithubResponseItem>> {
                 override fun onResponse(
                     call: Call<List<GithubResponseItem>>,
@@ -95,7 +93,7 @@ class GithubViewModel(
     }
 
     fun getFollowing(name: String) {
-        ApiConfig.getApiService().getFollowing(API_TOKEN, name.ifEmpty { "null" })
+        apiService.getFollowing(name.ifEmpty { "null" })
             .enqueue(object : Callback<List<GithubResponseItem>> {
                 override fun onResponse(
                     call: Call<List<GithubResponseItem>>,
@@ -116,7 +114,7 @@ class GithubViewModel(
     }
 
     fun getSearch(query: String) {
-        ApiConfig.getApiService().searchUser(API_TOKEN, query.ifEmpty { "null" })
+        apiService.searchUser(query.ifEmpty { "null" })
             .enqueue(object : Callback<SearchResponse> {
                 override fun onResponse(
                     call: Call<SearchResponse>,
@@ -135,18 +133,4 @@ class GithubViewModel(
                 }
             })
     }
-
-    companion object{
-        @Volatile
-        private var instance: GithubViewModel? = null
-        fun getInstance(
-            apiService: ApiService,
-            dao: Dao,
-            appExecutors: AppExecutors
-        ): GithubViewModel =
-            instance ?: synchronized(this) {
-                instance ?: GithubViewModel(apiService, dao, appExecutors)
-            }.also { instance = it }
-    }
-
 }

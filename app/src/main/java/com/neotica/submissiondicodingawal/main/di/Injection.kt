@@ -1,3 +1,4 @@
+/*
 package com.neotica.submissiondicodingawal.main.di
 
 import android.content.Context
@@ -21,4 +22,4 @@ object Injection {
         //Step 7.4: Returns instances from apiService, dao, and appExecutors
         return GithubViewModel.getInstance(apiService, dao, appExecutors)
     }
-}
+}*/

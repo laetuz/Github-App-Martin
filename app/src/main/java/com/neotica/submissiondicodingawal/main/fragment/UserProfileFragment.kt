@@ -6,32 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neotica.submissiondicodingawal.databinding.LayoutProfileBinding
-import com.neotica.submissiondicodingawal.main.MainActivity
 import com.neotica.submissiondicodingawal.main.fragment.adapter.TabAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
-import com.neotica.submissiondicodingawal.response.UserDetailResponse
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
-class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment() {
+class UserProfileFragment : Fragment() {
     private lateinit var binding: LayoutProfileBinding
     private lateinit var tabAdapter:TabAdapter
     private val tabTitle = listOf(
         "Followers",
         "Following"
     )
-    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private val viewModel : GithubViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
