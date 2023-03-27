@@ -27,6 +27,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <ImageView
+        android:id="@+id/iv_bookmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:tag="Not Saved"
+        android:contentDescription="Save"
+        android:src="@drawable/ic_heart"
+        app:layout_constraintStart_toStartOf="@id/iv_profile"
+        app:layout_constraintTop_toTopOf="@id/iv_profile" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -42,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:text="TextView"
+            android:text="@string/loading"
             android:textSize="18sp" />
         <TextView
             android:id="@+id/tv_username"
@@ -50,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:text="TextView"
+            android:text="@string/loading"
             android:textSize="18sp" />
         <LinearLayout
             android:layout_width="wrap_content"
@@ -64,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="10dp"
-                android:text="TextView"
+                android:text="@string/loading"
                 android:textSize="18sp" />
             <TextView
                 android:id="@+id/tv_following"
@@ -72,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="10dp"
-                android:text="TextView"
+                android:text="@string/loading"
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
