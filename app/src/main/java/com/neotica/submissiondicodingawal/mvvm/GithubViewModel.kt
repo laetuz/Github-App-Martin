@@ -5,17 +5,22 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.neotica.submissiondicodingawal.main.utils.AppExecutors
 import com.neotica.submissiondicodingawal.mvvm.Constants.API_TOKEN
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import com.neotica.submissiondicodingawal.response.SearchResponse
 import com.neotica.submissiondicodingawal.response.UserDetailResponse
 import com.neotica.submissiondicodingawal.retrofit.ApiConfig
+import com.neotica.submissiondicodingawal.retrofit.ApiService
+import com.neotica.submissiondicodingawal.room.Dao
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class GithubViewModel(
-    private val githubRepo: GithubRepo
+    private val apiService: ApiService,
+    private val dao: Dao,
+    private val appExecutors: AppExecutors
 ) : ViewModel() {
     //LiveData
     private val _githubResponse = MutableLiveData<List<GithubResponseItem>?>()
@@ -130,4 +135,18 @@ class GithubViewModel(
                 }
             })
     }
+
+    companion object{
+        @Volatile
+        private var instance: GithubViewModel? = null
+        fun getInstance(
+            apiService: ApiService,
+            dao: Dao,
+            appExecutors: AppExecutors
+        ): GithubViewModel =
+            instance ?: synchronized(this) {
+                instance ?: GithubViewModel(apiService, dao, appExecutors)
+            }.also { instance = it }
+    }
+
 }
