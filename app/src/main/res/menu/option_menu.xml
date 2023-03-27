@@ -10,5 +10,10 @@
             android:title="Search"
             app:actionViewClass="androidx.appcompat.widget.SearchView"
             app:showAsAction="collapseActionView|always" />
+        <item
+            android:id="@+id/favorite"
+            android:icon="@drawable/ic_heart"
+            android:title="Favorite"
+            app:showAsAction="collapseActionView|always" />
     </group>
 </menu>
