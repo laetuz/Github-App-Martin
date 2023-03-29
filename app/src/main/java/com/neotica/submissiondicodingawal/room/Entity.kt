@@ -3,7 +3,7 @@ package com.neotica.submissiondicodingawal.room
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 
-@androidx.room.Entity("users")
+@androidx.room.Entity("github")
 class Entity (
     @field:ColumnInfo("username")
     @field:PrimaryKey
@@ -11,5 +11,5 @@ class Entity (
     @field:ColumnInfo("imageUrl")
     val imageUrl: String? = null,
     @field:ColumnInfo("bookmarked")
-    val isBookmarked: Boolean
+    var isBookmarked: Boolean
 )

@@ -20,7 +20,7 @@ enum class FragmentType {
 class UserAdapter(private val users: List<GithubResponseItem>, usersFragment: FragmentType) :
     RecyclerView.Adapter<UserAdapter.ListViewHolder>() {
 
-    class ListViewHolder(private val binding: IvUserListBinding, private val fragmentType: FragmentType) :
+    class ListViewHolder(private val binding: IvUserListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindData(listUser: GithubResponseItem) {
             binding.apply {
@@ -46,7 +46,7 @@ class UserAdapter(private val users: List<GithubResponseItem>, usersFragment: Fr
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val binding = IvUserListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ListViewHolder(binding, fragmentType = FragmentType.DETAILS_FRAGMENT)
+        return ListViewHolder(binding)
     }
 
     override fun getItemCount(): Int {

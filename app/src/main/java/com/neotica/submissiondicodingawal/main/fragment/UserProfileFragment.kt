@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neotica.submissiondicodingawal.databinding.LayoutProfileBinding
 import com.neotica.submissiondicodingawal.main.fragment.adapter.TabAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
+import com.neotica.submissiondicodingawal.room.Entity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -22,6 +24,7 @@ class UserProfileFragment : Fragment() {
         "Following"
     )
     private val viewModel : GithubViewModel by viewModel()
+    private lateinit var entity: Entity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +65,11 @@ class UserProfileFragment : Fragment() {
             if (github != null) {
                 val followers = github.followers.toString()
                 val following = github.following.toString()
+                val name = github.name
+                binding.ivBookmark.setOnClickListener {
+                    viewModel.setFavorite(Entity(profile, avatar, true),true)
+                    Toast.makeText(context, "$profile added to favorite", Toast.LENGTH_SHORT).show()
+                }
                 binding.tvFollowers.text = "Followers: $followers"
                 binding.tvFollowing.text = "Following: $following"
                 binding.tvName.text = github.name

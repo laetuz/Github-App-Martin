@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_userFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
@@ -95,4 +98,8 @@
             android:id="@+id/action_searchFragment_to_userProfileFragment2"
             app:destination="@id/userProfileFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.neotica.submissiondicodingawal.main.fragment.FavoriteFragment"
+        android:label="FavoriteFragment" />
 </navigation>

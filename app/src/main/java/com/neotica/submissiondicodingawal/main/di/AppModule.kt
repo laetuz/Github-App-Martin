@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 val localModule = module{
     factory { get<GithubDatabase>().dao() }
     single{
-        Room.databaseBuilder(androidContext(), GithubDatabase::class.java, "GithubX.db").build()
+        Room.databaseBuilder(androidContext(), GithubDatabase::class.java, "Github.db").build()
     }
 }
 val networkModule= module {

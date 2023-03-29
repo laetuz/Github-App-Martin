@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.neotica.submissiondicodingawal.main.di.diskIO
 import com.neotica.submissiondicodingawal.main.utils.AppExecutors
 import com.neotica.submissiondicodingawal.mvvm.Constants.API_TOKEN
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
@@ -13,12 +14,14 @@ import com.neotica.submissiondicodingawal.response.UserDetailResponse
 import com.neotica.submissiondicodingawal.retrofit.ApiConfig
 import com.neotica.submissiondicodingawal.retrofit.ApiService
 import com.neotica.submissiondicodingawal.room.Dao
+import com.neotica.submissiondicodingawal.room.Entity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class GithubViewModel(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val gitDao: Dao,
 ) : ViewModel() {
     //LiveData
     private val _githubResponse = MutableLiveData<List<GithubResponseItem>?>()
@@ -27,6 +30,16 @@ class GithubViewModel(
     val detailResponse: LiveData<UserDetailResponse?> = _detailResponse
     val isLoading: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>(false)
+    }
+
+    fun getFavorite(): LiveData<List<Entity>> {
+        return gitDao.getGithub()
+    }
+    fun setFavorite(entity: Entity, state: Boolean){
+        diskIO.execute {
+            entity.isBookmarked = true
+            gitDao.insertBookmark(entity)
+        }
     }
 
     fun getUser() {

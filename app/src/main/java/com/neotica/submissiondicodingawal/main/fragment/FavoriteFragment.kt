@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.R
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
@@ -22,7 +21,7 @@ import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
-class UserFragment : Fragment() {
+class FavoriteFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
     private lateinit var itemList: IvUserListBinding
 
@@ -45,17 +44,12 @@ class UserFragment : Fragment() {
     }
 
     private fun getUserViewModel(){
-        viewModel.getUser()
+       // val adapter =
         binding.progressBar.isVisible = true
-        viewModel.githubResponse.observe(viewLifecycleOwner) {
-            if (it?.isNotEmpty() == true) {
-                bindData(it[0])
-                setRecView(it)
-            }
-            viewModel.isLoading.observe(viewLifecycleOwner){
-                binding.progressBar.isVisible = it
-            }
+        viewModel.getFavorite().observe(viewLifecycleOwner){
+            binding.progressBar.isVisible = false
         }
+        binding.apply {  }
     }
     private fun bindData(listUser: GithubResponseItem) {
         itemList.apply {
@@ -84,37 +78,5 @@ class UserFragment : Fragment() {
         }
         listData?.get(0)
     }
-    /*---------------SEARCH----------------*/
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
-            R.id.favorite -> {
-                val action = UserFragmentDirections.actionUserFragmentToFavoriteFragment()
-                findNavController().navigate(action)
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-    }
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        requireActivity().menuInflater.inflate(R.menu.option_menu, menu)
-        val searchManager = requireContext().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView = menu.findItem(R.id.search).actionView as SearchView
 
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
-        searchView.queryHint = resources.getString(androidx.appcompat.R.string.abc_search_hint)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                val profile = query.toString()
-                val navController = Navigation.findNavController(binding.root)
-                val sendBundle =
-                    UserFragmentDirections.actionUserFragmentToSearchFragment(profile)
-                navController.navigate(sendBundle)
-
-                return true
-            }
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-        })
-    }
 }
