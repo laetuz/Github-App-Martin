@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.main.fragment.UserFragmentDirections
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
-import com.neotica.submissiondicodingawal.main.fragment.FollowersFragmentDirections
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import java.util.*
 

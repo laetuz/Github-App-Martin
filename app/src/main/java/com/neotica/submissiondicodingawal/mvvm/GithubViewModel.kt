@@ -6,12 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.neotica.submissiondicodingawal.main.di.diskIO
-import com.neotica.submissiondicodingawal.main.utils.AppExecutors
-import com.neotica.submissiondicodingawal.mvvm.Constants.API_TOKEN
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import com.neotica.submissiondicodingawal.response.SearchResponse
 import com.neotica.submissiondicodingawal.response.UserDetailResponse
-import com.neotica.submissiondicodingawal.retrofit.ApiConfig
 import com.neotica.submissiondicodingawal.retrofit.ApiService
 import com.neotica.submissiondicodingawal.room.Dao
 import com.neotica.submissiondicodingawal.room.Entity

@@ -16,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.R
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
-import com.neotica.submissiondicodingawal.main.fragment.adapter.FragmentType
 import com.neotica.submissiondicodingawal.main.fragment.adapter.UserAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -72,7 +71,7 @@ class UserFragment : Fragment() {
     }
 
     private fun setRecView(listData: List<GithubResponseItem>?) {
-        val adapter = listData?.let { UserAdapter(it, FragmentType.USERS_FRAGMENT) }
+        val adapter = listData?.let { UserAdapter(it) }
         binding.rvHomeList.apply {
             layoutManager=LinearLayoutManager(context)
             this.adapter = adapter

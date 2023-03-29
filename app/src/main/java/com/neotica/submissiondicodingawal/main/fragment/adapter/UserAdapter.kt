@@ -12,12 +12,7 @@ import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import java.util.*
 
-enum class FragmentType {
-    USERS_FRAGMENT,
-    DETAILS_FRAGMENT
-}
-
-class UserAdapter(private val users: List<GithubResponseItem>, usersFragment: FragmentType) :
+class UserAdapter(private val users: List<GithubResponseItem>) :
     RecyclerView.Adapter<UserAdapter.ListViewHolder>() {
 
     class ListViewHolder(private val binding: IvUserListBinding) :
@@ -33,13 +28,6 @@ class UserAdapter(private val users: List<GithubResponseItem>, usersFragment: Fr
                 Glide.with(root)
                     .load(listUser.avatar_url)
                     .into(ivProfile)
-                /*itemView.setOnClickListener {
-                    if (fragmentType == FragmentType.DETAILS_FRAGMENT){
-                        val action = UserFragmentDirections.actionUserFragmentSelf()
-                        action.search
-                        it.findNavController().navigate(action)
-                    }
-                }*/
             }
         }
     }
