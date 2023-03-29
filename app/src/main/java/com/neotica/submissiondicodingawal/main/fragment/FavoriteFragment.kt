@@ -15,6 +15,7 @@ import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.R
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
+import com.neotica.submissiondicodingawal.main.fragment.adapter.FavoriteAdapter
 import com.neotica.submissiondicodingawal.main.fragment.adapter.FragmentType
 import com.neotica.submissiondicodingawal.main.fragment.adapter.UserAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
@@ -44,12 +45,22 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun getUserViewModel(){
-       // val adapter =
+        val gitAdapter = FavoriteAdapter {
+            if (it.isBookmarked){viewModel.deleteFavorite(it)}
+            else {viewModel.setFavorite(it,true)}
+        }
         binding.progressBar.isVisible = true
         viewModel.getFavorite().observe(viewLifecycleOwner){
             binding.progressBar.isVisible = false
+            gitAdapter.submitList(it)
         }
-        binding.apply {  }
+        binding.apply {
+            rvHomeList.apply {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = gitAdapter
+            }
+        }
     }
     private fun bindData(listUser: GithubResponseItem) {
         itemList.apply {

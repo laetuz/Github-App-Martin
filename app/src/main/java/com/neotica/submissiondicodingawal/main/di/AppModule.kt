@@ -18,7 +18,7 @@ val localModule = module{
 }
 val networkModule= module {
     single{
-        val auth = ""
+        val auth = "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"
         OkHttpClient.Builder()
             .addInterceptor{chain ->
                 val newRequest = chain.request().newBuilder()

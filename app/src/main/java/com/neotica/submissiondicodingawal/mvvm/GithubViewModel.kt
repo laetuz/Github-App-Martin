@@ -41,6 +41,12 @@ class GithubViewModel(
             gitDao.insertBookmark(entity)
         }
     }
+    fun deleteFavorite(entity: Entity){
+        diskIO.execute{
+            entity.isBookmarked = false
+            gitDao.updateBookmark(entity)
+        }
+    }
 
     fun getUser() {
         apiService.getUser()
