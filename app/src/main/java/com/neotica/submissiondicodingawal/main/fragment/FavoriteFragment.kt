@@ -13,6 +13,7 @@ import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
 import com.neotica.submissiondicodingawal.main.fragment.adapter.FavoriteAdapter
 import com.neotica.submissiondicodingawal.main.fragment.adapter.UserAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
+import com.neotica.submissiondicodingawal.room.Entity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -39,10 +40,11 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun getUserViewModel(){
-        val gitAdapter = FavoriteAdapter {
+        val gitAdapter = FavoriteAdapter (viewModel)
+        /*{
             if (it.isBookmarked){viewModel.deleteFavorite(it)}
             else {viewModel.setFavorite(it,true)}
-        }
+        }*/
         binding.progressBar.isVisible = true
         viewModel.getFavorite().observe(viewLifecycleOwner){
             binding.progressBar.isVisible = false
@@ -83,5 +85,4 @@ class FavoriteFragment : Fragment() {
         }
         listData?.get(0)
     }
-
 }

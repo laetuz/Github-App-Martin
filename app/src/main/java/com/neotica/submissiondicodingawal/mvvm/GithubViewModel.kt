@@ -1,10 +1,13 @@
 package com.neotica.submissiondicodingawal.mvvm
 
+import android.app.Application
 import android.content.ContentValues
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.*
 import com.neotica.submissiondicodingawal.main.di.diskIO
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import com.neotica.submissiondicodingawal.response.SearchResponse
@@ -12,13 +15,17 @@ import com.neotica.submissiondicodingawal.response.UserDetailResponse
 import com.neotica.submissiondicodingawal.retrofit.ApiService
 import com.neotica.submissiondicodingawal.room.Dao
 import com.neotica.submissiondicodingawal.room.Entity
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlinx.coroutines.flow.Flow
 
 class GithubViewModel(
     private val apiService: ApiService,
     private val gitDao: Dao,
+    application: Application
 ) : ViewModel() {
     //LiveData
     private val _githubResponse = MutableLiveData<List<GithubResponseItem>?>()
@@ -28,7 +35,9 @@ class GithubViewModel(
     val isLoading: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>(false)
     }
+    private val context = application
 
+    /*Bookmark*/
     fun getFavorite(): LiveData<List<Entity>> {
         return gitDao.getGithub()
     }
@@ -38,12 +47,32 @@ class GithubViewModel(
             gitDao.insertBookmark(entity)
         }
     }
-    fun deleteFavorite(entity: Entity){
-        diskIO.execute{
-            entity.isBookmarked = false
-            gitDao.updateBookmark(entity)
+
+    fun deleteUser(username: String){
+        diskIO.execute {
+            gitDao.deleteUser(username)
         }
     }
+    /*End of Bookmark*/
+
+    /*datastore*/
+    private suspend fun setTheme(currentTheme: String){
+        context.prefDataStore.edit { it[THEME_KEY] = currentTheme }
+    }
+    fun saveThemeSetting(currentTheme: String){
+        viewModelScope.launch {
+            setTheme(currentTheme)
+        }
+    }
+    private fun getThemeValue(): Flow<String>{
+        return context.prefDataStore.data.map {
+            it[THEME_KEY]?:"default"
+        }
+    }
+    fun getThemeSettings(): LiveData<String>{
+        return getThemeValue().asLiveData()
+    }
+    /*end of datastore*/
 
     fun getUser() {
         apiService.getUser()
@@ -66,6 +95,7 @@ class GithubViewModel(
             })
     }
 
+    /*Response api*/
     fun getUserDetail(name: String) {
         apiService.getUserDetail(name.ifEmpty { "null" })
             .enqueue(object : Callback<UserDetailResponse> {
@@ -148,5 +178,11 @@ class GithubViewModel(
                     Log.e(ContentValues.TAG, "Search : ${t.message}")
                 }
             })
+    }
+    /*End of response*/
+    companion object{
+        private const val DATASTORE_THEME = "preferences"
+        private val THEME_KEY         = stringPreferencesKey("theme_key")
+        private val Context.prefDataStore by preferencesDataStore(name = DATASTORE_THEME)
     }
 }

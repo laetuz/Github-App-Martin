@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -41,6 +42,7 @@ class UserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         getUserViewModel()
+        setTheme()
     }
 
     private fun getUserViewModel(){
@@ -85,13 +87,41 @@ class UserFragment : Fragment() {
     }
     /*---------------SEARCH----------------*/
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
+        return when (item.itemId){
             R.id.favorite -> {
                 val action = UserFragmentDirections.actionUserFragmentToFavoriteFragment()
                 findNavController().navigate(action)
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            R.id.theme -> {
+                val current = when(AppCompatDelegate.getDefaultNightMode()){
+                    AppCompatDelegate.MODE_NIGHT_NO -> "LIGHT"
+                    AppCompatDelegate.MODE_NIGHT_YES -> "DARK"
+                    else -> "LOl"
+                }
+                viewModel.saveThemeSetting(current)
+                true
+            }
+            /*{
+                val currentMode = AppCompatDelegate.getDefaultNightMode()
+                val newMode = if (currentMode == AppCompatDelegate.MODE_NIGHT_YES) {
+                    AppCompatDelegate.MODE_NIGHT_NO
+                } else {
+                    AppCompatDelegate.MODE_NIGHT_YES
+                }
+                AppCompatDelegate.setDefaultNightMode(newMode)
+                true
+            }*/
+            else -> true
+        }
+    }
+    private fun setTheme(){
+        viewModel.getThemeSettings().observe(viewLifecycleOwner){
+            if(it=="DARK"){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
         }
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -116,4 +146,5 @@ class UserFragment : Fragment() {
             }
         })
     }
+    /*Light mode*/
 }

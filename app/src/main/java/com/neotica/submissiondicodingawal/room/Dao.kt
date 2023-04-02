@@ -23,6 +23,9 @@ interface Dao {
     @Query("DELETE FROM github WHERE bookmarked = 0")
     fun deleteAll()
 
+    @Query("DELETE FROM github WHERE username = :username")
+    fun deleteUser(username: String)
+
     @Query("SELECT EXISTS(SELECT * FROM github WHERE username = :username AND bookmarked = 1)")
     fun isUserBookmarked(username: String): Boolean
 }

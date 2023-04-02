@@ -12,7 +12,7 @@ import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 val viewModule = module{
-    viewModel { GithubViewModel(get(),get()) }
+    viewModel { GithubViewModel(get(),get(),get()) }
 }
 
 val daoModule = module {
