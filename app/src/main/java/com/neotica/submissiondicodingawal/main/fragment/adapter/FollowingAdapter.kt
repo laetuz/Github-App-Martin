@@ -26,6 +26,7 @@ class FollowingAdapter(private val users: List<GithubResponseItem>) :
                 }
                 Glide.with(root)
                     .load(listUser.avatar_url)
+                    .circleCrop()
                     .into(ivProfile)
             }
         }

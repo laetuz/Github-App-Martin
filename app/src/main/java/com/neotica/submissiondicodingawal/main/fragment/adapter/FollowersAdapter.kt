@@ -28,6 +28,7 @@ class FollowersAdapter(private val users: List<GithubResponseItem>) :
                     }
                 Glide.with(root)
                     .load(listUser.avatar_url)
+                    .circleCrop()
                     .into(ivProfile)
             }
         }
@@ -44,12 +45,13 @@ class FollowersAdapter(private val users: List<GithubResponseItem>) :
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         Log.d(TAG, "Binding item at position $position")
         holder.bindData(users[position])
-        val avatar = users[position].avatar_url
         val username = users[position].login
-        val followers = users[position].followers_url
-        val following = users[position].following_url
         holder.itemView.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "Search $username on Home screen", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                holder.itemView.context,
+                "Search $username on Home screen",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
     }

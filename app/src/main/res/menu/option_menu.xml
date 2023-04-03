@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<!--Step 5: Add group container-->
     <group android:menuCategory="container">
-<!--Step 18: Add item search-->
         <item
             android:id="@+id/search"
             android:icon="@drawable/baseline_search_24"
-            android:title="Search"
+            android:title="@string/search"
             app:actionViewClass="androidx.appcompat.widget.SearchView"
-            app:showAsAction="collapseActionView|always" />
+            app:showAsAction="collapseActionView|ifRoom" />
         <item
             android:id="@+id/favorite"
             android:icon="@drawable/ic_heart"
-            android:title="Favorite"
+            android:title="@string/favorite"
             app:showAsAction="collapseActionView|always" />
         <item
             android:id="@+id/theme"
-            android:title="Theme"
-            android:actionLayout="@layout/switch_layout"
-            app:showAsAction="ifRoom" />
+            android:title="@string/theme"
+            app:actionViewClass="androidx.appcompat.widget.SwitchCompat"
+            app:showAsAction="always" />
     </group>
 </menu>

@@ -25,7 +25,6 @@ class FollowersFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = RvUserListBinding.inflate(layoutInflater, container, false)
         return binding.root
     }

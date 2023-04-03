@@ -76,6 +76,7 @@ class UserProfileFragment : Fragment() {
             }
             Glide.with(root)
                 .load(avatar)
+                .circleCrop()
                 .into(ivProfile)
             tvUsername.text = profile
                 .replaceFirstChar {

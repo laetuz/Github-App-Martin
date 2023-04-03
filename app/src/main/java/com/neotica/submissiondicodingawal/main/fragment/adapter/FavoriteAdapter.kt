@@ -16,12 +16,14 @@ import com.neotica.submissiondicodingawal.room.Entity
 class FavoriteAdapter(private val viewModel: GithubViewModel) :
     ListAdapter<Entity, FavoriteAdapter.FavViewHolder>(DIFF_CALLBACK) {
 
-    class FavViewHolder(val binding: IvUserFavoriteBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(entity: Entity){
+    class FavViewHolder(val binding: IvUserFavoriteBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(entity: Entity) {
             binding.apply {
                 tvUsername.text = entity.username
                 Glide.with(root)
                     .load(entity.imageUrl)
+                    .circleCrop()
                     .into(ivProfile)
                 ivProfile
             }
@@ -29,7 +31,8 @@ class FavoriteAdapter(private val viewModel: GithubViewModel) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavViewHolder {
-        val binding = IvUserFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            IvUserFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FavViewHolder(binding)
     }
 
@@ -38,7 +41,8 @@ class FavoriteAdapter(private val viewModel: GithubViewModel) :
         holder.bind(user)
         holder.binding.ivFavorite.setOnClickListener {
             viewModel.deleteUser(user.username)
-            Toast.makeText(holder.itemView.context, "${user.username} Deleted", Toast.LENGTH_SHORT).show()
+            Toast.makeText(holder.itemView.context, "${user.username} Deleted", Toast.LENGTH_SHORT)
+                .show()
         }
 
     }

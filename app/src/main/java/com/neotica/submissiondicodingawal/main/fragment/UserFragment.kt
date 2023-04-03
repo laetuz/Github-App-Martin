@@ -3,9 +3,12 @@ package com.neotica.submissiondicodingawal.main.fragment
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -68,6 +71,7 @@ class UserFragment : Fragment() {
                 }
             Glide.with(root)
                 .load(listUser.avatar_url)
+                .circleCrop()
                 .into(ivProfile)
         }
     }
@@ -85,7 +89,7 @@ class UserFragment : Fragment() {
         }
         listData?.get(0)
     }
-    /*---------------SEARCH----------------*/
+    /*---------------ACTION BAR----------------*/
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
             R.id.favorite -> {
@@ -93,25 +97,6 @@ class UserFragment : Fragment() {
                 findNavController().navigate(action)
                 true
             }
-            R.id.theme -> {
-                val current = when(AppCompatDelegate.getDefaultNightMode()){
-                    AppCompatDelegate.MODE_NIGHT_NO -> "LIGHT"
-                    AppCompatDelegate.MODE_NIGHT_YES -> "DARK"
-                    else -> "LOl"
-                }
-                viewModel.saveThemeSetting(current)
-                true
-            }
-            /*{
-                val currentMode = AppCompatDelegate.getDefaultNightMode()
-                val newMode = if (currentMode == AppCompatDelegate.MODE_NIGHT_YES) {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                }
-                AppCompatDelegate.setDefaultNightMode(newMode)
-                true
-            }*/
             else -> true
         }
     }
@@ -128,6 +113,18 @@ class UserFragment : Fragment() {
         requireActivity().menuInflater.inflate(R.menu.option_menu, menu)
         val searchManager = requireContext().getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchView = menu.findItem(R.id.search).actionView as SearchView
+        val switch = menu.findItem(R.id.theme).actionView as SwitchCompat
+        requireActivity().actionBar?.setTitle("fdsf")
+        Log.d("BAFAGIH", requireActivity().actionBar.toString())
+        switch.setOnClickListener {
+            val theme = if(switch.isChecked) {
+                "DARK"
+            } else {
+                "LIGHT"
+            }
+            viewModel.saveThemeSetting(theme)
+            Log.d("amoeba", switch.isChecked.toString())
+        }
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
         searchView.queryHint = resources.getString(androidx.appcompat.R.string.abc_search_hint)
@@ -146,5 +143,4 @@ class UserFragment : Fragment() {
             }
         })
     }
-    /*Light mode*/
 }

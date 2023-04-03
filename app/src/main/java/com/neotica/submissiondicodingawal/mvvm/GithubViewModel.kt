@@ -15,6 +15,7 @@ import com.neotica.submissiondicodingawal.response.UserDetailResponse
 import com.neotica.submissiondicodingawal.retrofit.ApiService
 import com.neotica.submissiondicodingawal.room.Dao
 import com.neotica.submissiondicodingawal.room.Entity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -59,11 +60,11 @@ class GithubViewModel(
     private suspend fun setTheme(currentTheme: String){
         context.prefDataStore.edit { it[THEME_KEY] = currentTheme }
     }
-    fun saveThemeSetting(currentTheme: String){
-        viewModelScope.launch {
+    fun saveThemeSetting(currentTheme: String)=
+        viewModelScope.launch(Dispatchers.IO){
             setTheme(currentTheme)
         }
-    }
+
     private fun getThemeValue(): Flow<String>{
         return context.prefDataStore.data.map {
             it[THEME_KEY]?:"default"
