@@ -3,11 +3,13 @@ package com.neotica.submissiondicodingawal.main.fragment
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
@@ -17,17 +19,16 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.R
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
-import com.neotica.submissiondicodingawal.main.fragment.adapter.FragmentType
 import com.neotica.submissiondicodingawal.main.fragment.adapter.UserAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 class UserFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
     private lateinit var itemList: IvUserListBinding
 
-    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
+    private val viewModel: GithubViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,9 +44,10 @@ class UserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         getUserViewModel()
+        setTheme()
     }
 
-    private fun getUserViewModel(){
+    private fun getUserViewModel() {
         viewModel.getUser()
         binding.progressBar.isVisible = true
         viewModel.githubResponse.observe(viewLifecycleOwner) {
@@ -53,11 +55,12 @@ class UserFragment : Fragment() {
                 bindData(it[0])
                 setRecView(it)
             }
-            viewModel.isLoading.observe(viewLifecycleOwner){
+            viewModel.isLoading.observe(viewLifecycleOwner) {
                 binding.progressBar.isVisible = it
             }
         }
     }
+
     private fun bindData(listUser: GithubResponseItem) {
         itemList.apply {
             tvUsername.text = listUser.login
@@ -68,14 +71,15 @@ class UserFragment : Fragment() {
                 }
             Glide.with(root)
                 .load(listUser.avatar_url)
+                .circleCrop()
                 .into(ivProfile)
         }
     }
 
     private fun setRecView(listData: List<GithubResponseItem>?) {
-        val adapter = listData?.let { UserAdapter(it, FragmentType.USERS_FRAGMENT) }
+        val adapter = listData?.let { UserAdapter(it) }
         binding.rvHomeList.apply {
-            layoutManager=LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(context)
             this.adapter = adapter
         }
         val layoutManager = LinearLayoutManager(context)
@@ -85,15 +89,50 @@ class UserFragment : Fragment() {
         }
         listData?.get(0)
     }
-    /*---------------SEARCH----------------*/
+
+    /*---------------ACTION BAR----------------*/
+    @Deprecated("Deprecated in Java")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.favorite -> {
+                val action = UserFragmentDirections.actionUserFragmentToFavoriteFragment()
+                findNavController().navigate(action)
+                true
+            }
+            else -> true
+        }
+    }
+
+    private fun setTheme() {
+        viewModel.getThemeSettings().observe(viewLifecycleOwner) {
+            if (it == "DARK") {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         requireActivity().menuInflater.inflate(R.menu.option_menu, menu)
-        val searchManager = requireContext().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchManager =
+            requireContext().getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchView = menu.findItem(R.id.search).actionView as SearchView
+        val switch = menu.findItem(R.id.theme).actionView as SwitchCompat
+        switch.setOnClickListener {
+            val theme = if (switch.isChecked) {
+                "DARK"
+            } else {
+                "LIGHT"
+            }
+            viewModel.saveThemeSetting(theme)
+            Log.d("amoeba", switch.isChecked.toString())
+        }
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
         searchView.queryHint = resources.getString(androidx.appcompat.R.string.abc_search_hint)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val profile = query.toString()
                 val navController = Navigation.findNavController(binding.root)
@@ -103,6 +142,7 @@ class UserFragment : Fragment() {
 
                 return true
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }

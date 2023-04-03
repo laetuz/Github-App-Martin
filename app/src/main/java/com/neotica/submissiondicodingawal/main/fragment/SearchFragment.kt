@@ -4,18 +4,17 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import com.neotica.submissiondicodingawal.main.fragment.adapter.SearchAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
 
-    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
+    private val viewModel: GithubViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

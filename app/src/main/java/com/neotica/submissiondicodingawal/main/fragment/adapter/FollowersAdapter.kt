@@ -5,19 +5,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
-import com.neotica.submissiondicodingawal.main.fragment.FollowersFragmentArgs
-import com.neotica.submissiondicodingawal.main.fragment.FollowersFragmentDirections
 import com.neotica.submissiondicodingawal.main.fragment.adapter.FollowersAdapter.ListViewHolder
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import java.util.*
 
 
 class FollowersAdapter(private val users: List<GithubResponseItem>) :
-    RecyclerView.Adapter<FollowersAdapter.ListViewHolder>() {
+    RecyclerView.Adapter<ListViewHolder>() {
 
     class ListViewHolder(private val binding: IvUserListBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -31,6 +28,7 @@ class FollowersAdapter(private val users: List<GithubResponseItem>) :
                     }
                 Glide.with(root)
                     .load(listUser.avatar_url)
+                    .circleCrop()
                     .into(ivProfile)
             }
         }
@@ -47,21 +45,13 @@ class FollowersAdapter(private val users: List<GithubResponseItem>) :
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         Log.d(TAG, "Binding item at position $position")
         holder.bindData(users[position])
-        val avatar = users[position].avatar_url
         val username = users[position].login
-        val followers = users[position].followers_url
-        val following = users[position].following_url
-       /* holder.itemView.setOnClickListener { view ->
-            val action = FollowersFragmentDirections.actionFollowersFragmentToUserProfileFragment(
-                avatar, username, followers, following
-            )
-            val actionSelf = FollowersFragmentDirections.actionFollowersFragmentSelf(
-                avatar, username
-            )
-            val toParent = view.findNavController().previousBackStackEntry
-        }*/
         holder.itemView.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "Search $username on Home screen", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                holder.itemView.context,
+                "Search $username on Home screen",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
     }

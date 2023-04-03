@@ -6,32 +6,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.fragment.findNavController
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neotica.submissiondicodingawal.databinding.LayoutProfileBinding
-import com.neotica.submissiondicodingawal.main.MainActivity
 import com.neotica.submissiondicodingawal.main.fragment.adapter.TabAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
-import com.neotica.submissiondicodingawal.response.UserDetailResponse
+import com.neotica.submissiondicodingawal.room.Entity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
-class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment() {
+class UserProfileFragment : Fragment() {
     private lateinit var binding: LayoutProfileBinding
-    private lateinit var tabAdapter:TabAdapter
+    private lateinit var tabAdapter: TabAdapter
     private val tabTitle = listOf(
         "Followers",
         "Following"
     )
-    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private val viewModel: GithubViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +40,7 @@ class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment
         bindHEHE()
     }
 
-    private fun viewPager(){
+    private fun viewPager() {
         val title = tabTitle
         binding.apply {
             viewPager.apply {
@@ -56,39 +48,43 @@ class UserProfileFragment/*(private val detail: UserDetailResponse)*/ : Fragment
                 adapter = tabAdapter
                 currentItem = 0
             }
-            TabLayoutMediator(tabLayout,viewPager) {tab, position ->
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 tab.text = title[position]
             }.attach()
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun bindHEHE(){
+    private fun bindHEHE() {
         val avatar = UserProfileFragmentArgs.fromBundle(arguments as Bundle).avatar.toString()
         val profile = UserProfileFragmentArgs.fromBundle(arguments as Bundle).profile
-        viewModel.getUserDetail(profile)
-        viewModel.detailResponse.observe(viewLifecycleOwner){
-            github ->
-            if (github != null) {
-                val followers = github.followers.toString()
-                val following = github.following.toString()
-                binding.tvFollowers.text = "Followers: $followers"
-                binding.tvFollowing.text = "Following: $following"
-                binding.tvName.text = github.name
-            }
-        }
-
-
         binding.apply {
+            viewModel.getUserDetail(profile)
+            viewModel.detailResponse.observe(viewLifecycleOwner) { github ->
+                if (github != null) {
+                    val followers = github.followers.toString()
+                    val following = github.following.toString()
+                    ivBookmark.setOnClickListener {
+                        viewModel.setFavorite(Entity(profile, avatar, true))
+                        Toast.makeText(context, "$profile added to favorite", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    tvFollowers.text = "Followers: $followers"
+                    tvFollowing.text = "Following: $following"
+                    tvName.text = github.name
+                }
+            }
             Glide.with(root)
                 .load(avatar)
+                .circleCrop()
                 .into(ivProfile)
             tvUsername.text = profile
                 .replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(
-                    Locale.ROOT
-                ) else it.toString()
-            }
+                    if (it.isLowerCase()) it.titlecase(
+                        Locale.ROOT
+                    ) else it.toString()
+                }
         }
+
     }
 }

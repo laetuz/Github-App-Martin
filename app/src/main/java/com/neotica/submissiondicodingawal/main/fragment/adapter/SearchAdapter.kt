@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.neotica.submissiondicodingawal.main.fragment.UserFragmentDirections
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
 import com.neotica.submissiondicodingawal.main.fragment.SearchFragmentDirections
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
@@ -29,6 +28,7 @@ class SearchAdapter(private val users: List<GithubResponseItem>) :
                     }
                 Glide.with(root)
                     .load(listUser.avatar_url)
+                    .circleCrop()
                     .into(ivProfile)
             }
         }

@@ -5,14 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.neotica.submissiondicodingawal.main.fragment.UserFragmentDirections
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import java.util.*
-
 
 class FollowingAdapter(private val users: List<GithubResponseItem>) :
     RecyclerView.Adapter<FollowingAdapter.ListViewHolder>() {
@@ -29,6 +26,7 @@ class FollowingAdapter(private val users: List<GithubResponseItem>) :
                 }
                 Glide.with(root)
                     .load(listUser.avatar_url)
+                    .circleCrop()
                     .into(ivProfile)
             }
         }
@@ -45,7 +43,6 @@ class FollowingAdapter(private val users: List<GithubResponseItem>) :
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         Log.d(TAG, "Binding item at position $position")
         holder.bindData(users[position])
-        val avatar = users[position].avatar_url
         val username = users[position].login
         holder.itemView.setOnClickListener {
             Toast.makeText(holder.itemView.context, "Search $username on Home screen", Toast.LENGTH_SHORT).show()

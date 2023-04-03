@@ -1,5 +1,11 @@
 <resources>
-    <string name="app_name">Submission Dicoding Awal</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">Martin MD 39</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loading">Loading...</string>
+    <string name="favorite">Favorite</string>
+    <string name="splash">Welcome to Martin GitHub app.</string>
+
+    <!--  Action Bar  -->
+    <string name="search">Search</string>
+    <string name="theme">Theme</string>
 </resources>

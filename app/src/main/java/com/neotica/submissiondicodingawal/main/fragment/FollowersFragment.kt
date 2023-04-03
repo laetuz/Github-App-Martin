@@ -6,27 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.main.fragment.adapter.FollowersAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModelFactory
 import com.neotica.submissiondicodingawal.response.GithubResponseItem
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FollowersFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
-    private val viewModel by viewModels<GithubViewModel> { GithubViewModelFactory }
+    private val viewModel: GithubViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = RvUserListBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -42,17 +39,6 @@ class FollowersFragment : Fragment() {
         } else {
             binding.progressBar.visibility = View.GONE
         }
-    }
-
-    fun bindHeHe(){
-        binding.apply {
-            val parentRecyclerView = rvHomeList.findViewHolderForItemId(0)
-            val position = parentRecyclerView.adapterPosition
-            if (position != RecyclerView.NO_POSITION) {
-                rvHomeList.adapter?.onBindViewHolder(parentRecyclerView,position)
-            }
-        }
-
     }
 
     private fun getFollowers() {
@@ -83,7 +69,7 @@ class FollowersFragment : Fragment() {
             rvHomeList.addItemDecoration(itemDivider)
         }
         //todo fix if list is zero
-        if (listData == null){
+        if (listData == null) {
             Toast.makeText(context, "data is zero", Toast.LENGTH_SHORT).show()
         }
     }

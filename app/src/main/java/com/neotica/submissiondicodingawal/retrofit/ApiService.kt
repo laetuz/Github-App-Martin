@@ -5,7 +5,6 @@ import com.neotica.submissiondicodingawal.response.SearchResponse
 import com.neotica.submissiondicodingawal.response.UserDetailResponse
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -32,8 +31,4 @@ interface ApiService {
     fun searchUser(
         @Query("q") login: String
     ): Call<SearchResponse>
-
-    @GET("users")
-    fun getUsername(): GithubResponseItem
-
 }
