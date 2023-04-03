@@ -65,7 +65,7 @@ class UserProfileFragment : Fragment() {
                     val followers = github.followers.toString()
                     val following = github.following.toString()
                     ivBookmark.setOnClickListener {
-                        viewModel.setFavorite(Entity(profile, avatar, true), true)
+                        viewModel.setFavorite(Entity(profile, avatar, true))
                         Toast.makeText(context, "$profile added to favorite", Toast.LENGTH_SHORT)
                             .show()
                     }

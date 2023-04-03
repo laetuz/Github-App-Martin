@@ -6,7 +6,7 @@ import com.neotica.submissiondicodingawal.main.fragment.FollowersFragment
 import com.neotica.submissiondicodingawal.main.fragment.FollowingFragment
 import com.neotica.submissiondicodingawal.main.fragment.UserProfileFragment
 
-class TabAdapter(activity: UserProfileFragment): FragmentStateAdapter(activity) {
+class TabAdapter(activity: UserProfileFragment) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int {
         return 2
     }

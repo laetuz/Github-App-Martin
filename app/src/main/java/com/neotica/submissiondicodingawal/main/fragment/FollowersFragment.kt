@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.main.fragment.adapter.FollowersAdapter
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
@@ -19,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FollowersFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
-    private val viewModel : GithubViewModel by viewModel()
+    private val viewModel: GithubViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,17 +39,6 @@ class FollowersFragment : Fragment() {
         } else {
             binding.progressBar.visibility = View.GONE
         }
-    }
-
-    fun bindHeHe(){
-        binding.apply {
-            val parentRecyclerView = rvHomeList.findViewHolderForItemId(0)
-            val position = parentRecyclerView.adapterPosition
-            if (position != RecyclerView.NO_POSITION) {
-                rvHomeList.adapter?.onBindViewHolder(parentRecyclerView,position)
-            }
-        }
-
     }
 
     private fun getFollowers() {
@@ -81,7 +69,7 @@ class FollowersFragment : Fragment() {
             rvHomeList.addItemDecoration(itemDivider)
         }
         //todo fix if list is zero
-        if (listData == null){
+        if (listData == null) {
             Toast.makeText(context, "data is zero", Toast.LENGTH_SHORT).show()
         }
     }

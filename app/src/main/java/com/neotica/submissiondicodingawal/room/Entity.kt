@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 
 @androidx.room.Entity("github")
-class Entity (
+class Entity(
     @field:ColumnInfo("username")
     @field:PrimaryKey
     val username: String,

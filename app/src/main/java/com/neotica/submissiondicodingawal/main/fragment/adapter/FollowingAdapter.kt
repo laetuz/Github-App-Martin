@@ -43,7 +43,6 @@ class FollowingAdapter(private val users: List<GithubResponseItem>) :
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         Log.d(TAG, "Binding item at position $position")
         holder.bindData(users[position])
-        val avatar = users[position].avatar_url
         val username = users[position].login
         holder.itemView.setOnClickListener {
             Toast.makeText(holder.itemView.context, "Search $username on Home screen", Toast.LENGTH_SHORT).show()

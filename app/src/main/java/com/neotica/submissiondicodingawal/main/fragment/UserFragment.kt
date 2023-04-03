@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SwitchCompat
@@ -29,7 +28,7 @@ class UserFragment : Fragment() {
     private lateinit var binding: RvUserListBinding
     private lateinit var itemList: IvUserListBinding
 
-    private val viewModel : GithubViewModel by viewModel()
+    private val viewModel: GithubViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +47,7 @@ class UserFragment : Fragment() {
         setTheme()
     }
 
-    private fun getUserViewModel(){
+    private fun getUserViewModel() {
         viewModel.getUser()
         binding.progressBar.isVisible = true
         viewModel.githubResponse.observe(viewLifecycleOwner) {
@@ -56,11 +55,12 @@ class UserFragment : Fragment() {
                 bindData(it[0])
                 setRecView(it)
             }
-            viewModel.isLoading.observe(viewLifecycleOwner){
+            viewModel.isLoading.observe(viewLifecycleOwner) {
                 binding.progressBar.isVisible = it
             }
         }
     }
+
     private fun bindData(listUser: GithubResponseItem) {
         itemList.apply {
             tvUsername.text = listUser.login
@@ -79,7 +79,7 @@ class UserFragment : Fragment() {
     private fun setRecView(listData: List<GithubResponseItem>?) {
         val adapter = listData?.let { UserAdapter(it) }
         binding.rvHomeList.apply {
-            layoutManager=LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(context)
             this.adapter = adapter
         }
         val layoutManager = LinearLayoutManager(context)
@@ -89,9 +89,11 @@ class UserFragment : Fragment() {
         }
         listData?.get(0)
     }
+
     /*---------------ACTION BAR----------------*/
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId){
+        return when (item.itemId) {
             R.id.favorite -> {
                 val action = UserFragmentDirections.actionUserFragmentToFavoriteFragment()
                 findNavController().navigate(action)
@@ -100,24 +102,26 @@ class UserFragment : Fragment() {
             else -> true
         }
     }
-    private fun setTheme(){
-        viewModel.getThemeSettings().observe(viewLifecycleOwner){
-            if(it=="DARK"){
+
+    private fun setTheme() {
+        viewModel.getThemeSettings().observe(viewLifecycleOwner) {
+            if (it == "DARK") {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }else{
+            } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             }
         }
     }
+
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         requireActivity().menuInflater.inflate(R.menu.option_menu, menu)
-        val searchManager = requireContext().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchManager =
+            requireContext().getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchView = menu.findItem(R.id.search).actionView as SearchView
         val switch = menu.findItem(R.id.theme).actionView as SwitchCompat
-        requireActivity().actionBar?.setTitle("fdsf")
-        Log.d("BAFAGIH", requireActivity().actionBar.toString())
         switch.setOnClickListener {
-            val theme = if(switch.isChecked) {
+            val theme = if (switch.isChecked) {
                 "DARK"
             } else {
                 "LIGHT"
@@ -128,7 +132,7 @@ class UserFragment : Fragment() {
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
         searchView.queryHint = resources.getString(androidx.appcompat.R.string.abc_search_hint)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val profile = query.toString()
                 val navController = Navigation.findNavController(binding.root)
@@ -138,6 +142,7 @@ class UserFragment : Fragment() {
 
                 return true
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }

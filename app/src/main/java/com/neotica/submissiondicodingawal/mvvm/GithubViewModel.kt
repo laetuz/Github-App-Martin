@@ -42,14 +42,15 @@ class GithubViewModel(
     fun getFavorite(): LiveData<List<Entity>> {
         return gitDao.getGithub()
     }
-    fun setFavorite(entity: Entity, state: Boolean){
+
+    fun setFavorite(entity: Entity) {
         diskIO.execute {
             entity.isBookmarked = true
             gitDao.insertBookmark(entity)
         }
     }
 
-    fun deleteUser(username: String){
+    fun deleteUser(username: String) {
         diskIO.execute {
             gitDao.deleteUser(username)
         }
@@ -57,20 +58,22 @@ class GithubViewModel(
     /*End of Bookmark*/
 
     /*datastore*/
-    private suspend fun setTheme(currentTheme: String){
+    private suspend fun setTheme(currentTheme: String) {
         context.prefDataStore.edit { it[THEME_KEY] = currentTheme }
     }
-    fun saveThemeSetting(currentTheme: String)=
-        viewModelScope.launch(Dispatchers.IO){
+
+    fun saveThemeSetting(currentTheme: String) =
+        viewModelScope.launch(Dispatchers.IO) {
             setTheme(currentTheme)
         }
 
-    private fun getThemeValue(): Flow<String>{
+    private fun getThemeValue(): Flow<String> {
         return context.prefDataStore.data.map {
-            it[THEME_KEY]?:"default"
+            it[THEME_KEY] ?: "default"
         }
     }
-    fun getThemeSettings(): LiveData<String>{
+
+    fun getThemeSettings(): LiveData<String> {
         return getThemeValue().asLiveData()
     }
     /*end of datastore*/
@@ -180,10 +183,11 @@ class GithubViewModel(
                 }
             })
     }
+
     /*End of response*/
-    companion object{
+    companion object {
         private const val DATASTORE_THEME = "preferences"
-        private val THEME_KEY         = stringPreferencesKey("theme_key")
+        private val THEME_KEY = stringPreferencesKey("theme_key")
         private val Context.prefDataStore by preferencesDataStore(name = DATASTORE_THEME)
     }
 }
