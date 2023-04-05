@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_userFragment_to_favoriteFragment"
             app:destination="@id/favoriteFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_themeFragment"
+            app:destination="@id/themeFragment" />
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
@@ -101,5 +104,13 @@
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.neotica.submissiondicodingawal.main.fragment.FavoriteFragment"
-        android:label="FavoriteFragment" />
+        android:label="FavoriteFragment" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/themeFragment"
+        android:name="com.neotica.submissiondicodingawal.main.fragment.ThemeFragment"
+        android:label="ThemeFragment" />
 </navigation>
