@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.databinding.IvUserFavoriteBinding
+import com.neotica.submissiondicodingawal.main.fragment.FavoriteFragmentDirections
 import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
 import com.neotica.submissiondicodingawal.room.Entity
 
@@ -38,11 +40,19 @@ class FavoriteAdapter(private val viewModel: GithubViewModel) :
 
     override fun onBindViewHolder(holder: FavViewHolder, position: Int) {
         val user = getItem(position)
+        val username = user.username
+        val avatar = user.imageUrl
         holder.bind(user)
         holder.binding.ivFavorite.setOnClickListener {
             viewModel.deleteUser(user.username)
             Toast.makeText(holder.itemView.context, "${user.username} Deleted", Toast.LENGTH_SHORT)
                 .show()
+        }
+        holder.itemView.setOnClickListener { view ->
+            val action = FavoriteFragmentDirections.actionFavoriteFragmentToUserProfileFragment(
+                avatar, username, username, username
+            )
+            view.findNavController().navigate(action)
         }
 
     }

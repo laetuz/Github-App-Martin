@@ -14,9 +14,9 @@
             android:title="@string/favorite"
             app:showAsAction="collapseActionView|always" />
         <item
-            android:id="@+id/theme"
+            android:id="@+id/themePage"
+            android:icon="@drawable/theme_24"
             android:title="@string/theme"
-            app:actionViewClass="androidx.appcompat.widget.SwitchCompat"
-            app:showAsAction="always" />
+            app:showAsAction="collapseActionView|always" />
     </group>
 </menu>

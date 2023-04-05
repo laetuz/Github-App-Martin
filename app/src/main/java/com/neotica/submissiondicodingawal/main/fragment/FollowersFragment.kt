@@ -68,7 +68,6 @@ class FollowersFragment : Fragment() {
             val itemDivider = DividerItemDecoration(context, layoutManager.orientation)
             rvHomeList.addItemDecoration(itemDivider)
         }
-        //todo fix if list is zero
         if (listData == null) {
             Toast.makeText(context, "data is zero", Toast.LENGTH_SHORT).show()
         }

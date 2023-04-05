@@ -3,11 +3,9 @@ package com.neotica.submissiondicodingawal.main.fragment
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -25,7 +23,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 class UserFragment : Fragment() {
-    private lateinit var binding: RvUserListBinding
+    private var _binding: RvUserListBinding? = null
+    private val binding get() = _binding!!
     private lateinit var itemList: IvUserListBinding
 
     private val viewModel: GithubViewModel by viewModel()
@@ -34,8 +33,7 @@ class UserFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-        binding = RvUserListBinding.inflate(layoutInflater, container, false)
+        _binding = RvUserListBinding.inflate(layoutInflater, container, false)
         itemList = IvUserListBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -99,7 +97,12 @@ class UserFragment : Fragment() {
                 findNavController().navigate(action)
                 true
             }
-            else -> true
+            R.id.themePage -> {
+                val action = UserFragmentDirections.actionUserFragmentToThemeFragment()
+                findNavController().navigate(action)
+                true
+            }
+            else -> false
         }
     }
 
@@ -119,16 +122,6 @@ class UserFragment : Fragment() {
         val searchManager =
             requireContext().getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchView = menu.findItem(R.id.search).actionView as SearchView
-        val switch = menu.findItem(R.id.theme).actionView as SwitchCompat
-        switch.setOnClickListener {
-            val theme = if (switch.isChecked) {
-                "DARK"
-            } else {
-                "LIGHT"
-            }
-            viewModel.saveThemeSetting(theme)
-            Log.d("amoeba", switch.isChecked.toString())
-        }
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
         searchView.queryHint = resources.getString(androidx.appcompat.R.string.abc_search_hint)
@@ -147,5 +140,10 @@ class UserFragment : Fragment() {
                 return false
             }
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

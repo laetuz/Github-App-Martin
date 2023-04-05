@@ -31,13 +31,11 @@
         android:id="@+id/iv_bookmark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:contentDescription="Save"
         android:src="@drawable/ic_heart"
         android:tag="Not Saved"
-        app:layout_constraintStart_toStartOf="@id/iv_profile"
-        app:layout_constraintTop_toTopOf="@id/iv_profile" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
+        app:layout_constraintEnd_toEndOf="@+id/iv_profile" />
 
     <LinearLayout
         android:id="@+id/linearLayout"

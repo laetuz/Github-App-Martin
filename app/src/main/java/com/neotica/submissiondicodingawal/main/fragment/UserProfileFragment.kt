@@ -17,7 +17,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 class UserProfileFragment : Fragment() {
-    private lateinit var binding: LayoutProfileBinding
+    private var _binding: LayoutProfileBinding? = null
+    private val binding get() = _binding!!
     private lateinit var tabAdapter: TabAdapter
     private val tabTitle = listOf(
         "Followers",
@@ -30,7 +31,7 @@ class UserProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = LayoutProfileBinding.inflate(layoutInflater, container, false)
+        _binding = LayoutProfileBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -53,6 +54,7 @@ class UserProfileFragment : Fragment() {
             }.attach()
         }
     }
+
 
     @SuppressLint("SetTextI18n")
     private fun bindHEHE() {
@@ -86,5 +88,10 @@ class UserProfileFragment : Fragment() {
                 }
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
