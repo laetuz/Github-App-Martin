@@ -1,6 +1,7 @@
 package com.neotica.submissiondicodingawal.main.di
 
 import androidx.room.Room
+import com.neotica.submissiondicodingawal.BuildConfig
 import com.neotica.submissiondicodingawal.mvvm.Constants
 import com.neotica.submissiondicodingawal.retrofit.ApiService
 import com.neotica.submissiondicodingawal.room.GithubDatabase
@@ -18,7 +19,7 @@ val localModule = module{
 }
 val networkModule= module {
     single{
-        val auth = ""
+        val auth = BuildConfig.AUTH_TOKEN
         OkHttpClient.Builder()
             .addInterceptor{chain ->
                 val newRequest = chain.request().newBuilder()
