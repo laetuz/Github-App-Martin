@@ -115,11 +115,13 @@ class UserFragment : Fragment() {
     }
 
     private fun setTheme() {
-        viewModel.getThemeSettings().observe(viewLifecycleOwner) {
-            if (it == "DARK") {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.getThemeSettings().collect{
+                if (it == "DARK") {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }
             }
         }
     }
