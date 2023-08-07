@@ -1,7 +1,7 @@
 package com.neotica.submissiondicodingawal
 
 import android.app.Application
-import com.neotica.submissiondicodingawal.main.di.*
+import com.neotica.submissiondicodingawal.view.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
 
@@ -11,7 +11,7 @@ class MyApplication : Application() {
         GlobalContext.startKoin {
             androidContext(this@MyApplication)
             modules(
-                networkModule, localModule, viewModule, repositoryModule, daoModule
+                networkModule, localModule, viewModule, repositoryModule
             )
         }
     }
