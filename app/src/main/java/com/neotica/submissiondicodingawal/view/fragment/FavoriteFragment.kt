@@ -1,14 +1,15 @@
-package com.neotica.submissiondicodingawal.main.fragment
+package com.neotica.submissiondicodingawal.view.fragment
 
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
-import com.neotica.submissiondicodingawal.main.fragment.adapter.FavoriteAdapter
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
+import com.neotica.submissiondicodingawal.view.fragment.adapter.FavoriteAdapter
+import com.neotica.submissiondicodingawal.viewmodel.GithubViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteFragment : Fragment() {
@@ -36,9 +37,11 @@ class FavoriteFragment : Fragment() {
     private fun getUserViewModel() {
         val gitAdapter = FavoriteAdapter(viewModel)
         binding.progressBar.isVisible = true
-        viewModel.getFavorite().observe(viewLifecycleOwner) {
-            binding.progressBar.isVisible = false
-            gitAdapter.submitList(it)
+        lifecycleScope.launchWhenStarted {
+            viewModel.getFavorite().collect{
+                binding.progressBar.isVisible = false
+                gitAdapter.submitList(it)
+            }
         }
         binding.apply {
             rvHomeList.apply {

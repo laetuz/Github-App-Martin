@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.main.fragment
+package com.neotica.submissiondicodingawal.view.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -7,12 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neotica.submissiondicodingawal.databinding.LayoutProfileBinding
-import com.neotica.submissiondicodingawal.main.fragment.adapter.TabAdapter
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
-import com.neotica.submissiondicodingawal.room.Entity
+import com.neotica.submissiondicodingawal.view.fragment.adapter.TabAdapter
+import com.neotica.submissiondicodingawal.viewmodel.GithubViewModel
+import com.neotica.submissiondicodingawal.data.local.database.Entity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -62,18 +63,20 @@ class UserProfileFragment : Fragment() {
         val profile = UserProfileFragmentArgs.fromBundle(arguments as Bundle).profile
         binding.apply {
             viewModel.getUserDetail(profile)
-            viewModel.detailResponse.observe(viewLifecycleOwner) { github ->
-                if (github != null) {
-                    val followers = github.followers.toString()
-                    val following = github.following.toString()
-                    ivBookmark.setOnClickListener {
-                        viewModel.setFavorite(Entity(profile, avatar, true))
-                        Toast.makeText(context, "$profile added to favorite", Toast.LENGTH_SHORT)
-                            .show()
+            lifecycleScope.launchWhenStarted {
+                viewModel.detailResponse.collect {github ->
+                    if (github != null) {
+                        val followers = github.followers.toString()
+                        val following = github.following.toString()
+                        ivBookmark.setOnClickListener {
+                            viewModel.setFavorite(Entity(profile, avatar, true))
+                            Toast.makeText(context, "$profile added to favorite", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        tvFollowers.text = "Followers: $followers"
+                        tvFollowing.text = "Following: $following"
+                        tvName.text = github.name
                     }
-                    tvFollowers.text = "Followers: $followers"
-                    tvFollowing.text = "Following: $following"
-                    tvName.text = github.name
                 }
             }
             Glide.with(root)

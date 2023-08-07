@@ -1,14 +1,15 @@
-package com.neotica.submissiondicodingawal.main.fragment
+package com.neotica.submissiondicodingawal.view.fragment
 
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
-import com.neotica.submissiondicodingawal.response.GithubResponseItem
-import com.neotica.submissiondicodingawal.main.fragment.adapter.SearchAdapter
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
+import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
+import com.neotica.submissiondicodingawal.view.fragment.adapter.SearchAdapter
+import com.neotica.submissiondicodingawal.viewmodel.GithubViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -43,10 +44,12 @@ class SearchFragment : Fragment() {
         val searchArgs = SearchFragmentArgs.fromBundle(arguments as Bundle).profile
         Toast.makeText(context, searchArgs, Toast.LENGTH_SHORT).show()
         viewModel.getSearch(searchArgs)
-        viewModel.githubResponse.observe(viewLifecycleOwner) { github ->
-            if (github != null) {
-                showLoading(false)
-                setSearchRecView(github)
+        lifecycleScope.launchWhenStarted {
+            viewModel.githubResponse1.collect {
+                if (it != null) {
+                    showLoading(false)
+                    setSearchRecView(it)
+                }
             }
         }
     }
