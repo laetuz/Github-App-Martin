@@ -1,18 +1,16 @@
-package com.neotica.submissiondicodingawal.room
+package com.neotica.submissiondicodingawal.data.local.database
 
-import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
-@androidx.room.Dao
+@Dao
 interface Dao {
     @Query("SELECT * FROM github ORDER BY username desc")
-    fun getGithub(): LiveData<List<Entity>>
-
-    @Query("SELECT * FROM github where bookmarked = 1")
-    fun getBookmarked(): LiveData<List<Entity>>
+    fun getGithub(): Flow<List<Entity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertBookmark(github: Entity)
