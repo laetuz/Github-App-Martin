@@ -13,7 +13,7 @@ class HomeRepo(private val apiService: ApiService) {
     val userResponse = MutableStateFlow<List<GithubResponseItem>?>(null)
     val isLoading: MutableStateFlow<Boolean> by lazy { MutableStateFlow(false) }
 
-    fun getUser()  {
+    fun getUser() {
         isLoading.value = true
         apiService.getUser()
             .enqueue(object : Callback<List<GithubResponseItem>> {
@@ -27,6 +27,7 @@ class HomeRepo(private val apiService: ApiService) {
                         Log.d("neo-tag", response.body().toString())
                     } else {
                         isLoading.value = false
+                        userResponse.value = response.body()
                         Log.e(ContentValues.TAG, "On failure: ${response.message()}")
                     }
                 }
