@@ -54,9 +54,6 @@ class GithubViewModel(
 
     private val _detailResponse = MutableStateFlow<UserDetailResponse?>(null)
     val detailResponse: StateFlow<UserDetailResponse?> = _detailResponse
-    val isLoading: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>(false)
-    }
     private val context = application
 
     /*Bookmark*/
