@@ -6,7 +6,7 @@
     app:startDestination="@id/userFragment">
     <fragment
         android:id="@+id/userFragment"
-        android:name="com.neotica.submissiondicodingawal.main.fragment.UserFragment"
+        android:name="com.neotica.submissiondicodingawal.view.fragment.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/rv_user_list" >
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.neotica.submissiondicodingawal.main.fragment.UserProfileFragment"
+        android:name="com.neotica.submissiondicodingawal.view.fragment.UserProfileFragment"
         android:label="UserProfileFragment" >
         <argument
             android:name="avatar"
@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/followersFragment"
-        android:name="com.neotica.submissiondicodingawal.main.fragment.FollowersFragment"
+        android:name="com.neotica.submissiondicodingawal.view.fragment.FollowersFragment"
         android:label="FollowersFragment" >
         <argument
             android:name="avatar"
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/followingFragment"
-        android:name="com.neotica.submissiondicodingawal.main.fragment.FollowingFragment"
+        android:name="com.neotica.submissiondicodingawal.view.fragment.FollowingFragment"
         android:label="FollowingFragment" >
         <argument
             android:name="avatar"
@@ -89,7 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.neotica.submissiondicodingawal.main.fragment.SearchFragment"
+        android:name="com.neotica.submissiondicodingawal.view.fragment.SearchFragment"
         android:label="SearchFragment" >
         <argument
             android:name="profile"
@@ -103,7 +103,7 @@
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.neotica.submissiondicodingawal.main.fragment.FavoriteFragment"
+        android:name="com.neotica.submissiondicodingawal.view.fragment.FavoriteFragment"
         android:label="FavoriteFragment" >
         <action
             android:id="@+id/action_favoriteFragment_to_userProfileFragment"
@@ -111,6 +111,6 @@
     </fragment>
     <fragment
         android:id="@+id/themeFragment"
-        android:name="com.neotica.submissiondicodingawal.main.fragment.ThemeFragment"
+        android:name="com.neotica.submissiondicodingawal.view.fragment.ThemeFragment"
         android:label="ThemeFragment" />
 </navigation>
