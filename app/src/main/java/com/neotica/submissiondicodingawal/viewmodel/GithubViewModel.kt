@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.mvvm
+package com.neotica.submissiondicodingawal.viewmodel
 
 import android.app.Application
 import android.content.ContentValues
@@ -8,13 +8,16 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.*
-import com.neotica.submissiondicodingawal.main.di.diskIO
-import com.neotica.submissiondicodingawal.response.GithubResponseItem
-import com.neotica.submissiondicodingawal.response.SearchResponse
-import com.neotica.submissiondicodingawal.response.UserDetailResponse
-import com.neotica.submissiondicodingawal.retrofit.ApiService
-import com.neotica.submissiondicodingawal.room.Dao
-import com.neotica.submissiondicodingawal.room.Entity
+import com.neotica.submissiondicodingawal.data.local.repo.HomeRepo
+import com.neotica.submissiondicodingawal.view.di.diskIO
+import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
+import com.neotica.submissiondicodingawal.data.remote.model.SearchResponse
+import com.neotica.submissiondicodingawal.data.remote.model.UserDetailResponse
+import com.neotica.submissiondicodingawal.data.remote.retrofit.ApiService
+import com.neotica.submissiondicodingawal.data.local.database.Dao
+import com.neotica.submissiondicodingawal.data.local.database.Entity
+import com.neotica.submissiondicodingawal.data.local.repo.FollowerRepo
+import com.neotica.submissiondicodingawal.data.local.repo.FollowingRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -22,24 +25,42 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class GithubViewModel(
+    private val homeRepo: HomeRepo,
+    private val followingRepo: FollowingRepo,
+    private val followerRepo: FollowerRepo,
     private val apiService: ApiService,
     private val gitDao: Dao,
     application: Application
 ) : ViewModel() {
-    //LiveData
-    private val _githubResponse = MutableLiveData<List<GithubResponseItem>?>()
-    val githubResponse: LiveData<List<GithubResponseItem>?> = _githubResponse
-    private val _detailResponse = MutableLiveData<UserDetailResponse?>()
-    val detailResponse: LiveData<UserDetailResponse?> = _detailResponse
+    //Home Screen
+    val homeResponse = homeRepo.userResponse
+    val isLoadingHome = homeRepo.isLoading
+
+    //Following Screen
+    val isLoadingFollowing = followingRepo.isLoading
+    val followingResponse = followingRepo.followingResponse
+
+    //Follower Screen
+    val isLoadingFollower = followerRepo.isLoading
+    val followerResponse = followerRepo.followersResponse
+
+    //Search Screen
+    private val _githubResponse1 = MutableStateFlow<List<GithubResponseItem>?>(null)
+    val githubResponse1: StateFlow<List<GithubResponseItem>?> = _githubResponse1
+
+    private val _detailResponse = MutableStateFlow<UserDetailResponse?>(null)
+    val detailResponse: StateFlow<UserDetailResponse?> = _detailResponse
     val isLoading: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>(false)
     }
     private val context = application
 
     /*Bookmark*/
-    fun getFavorite(): LiveData<List<Entity>> {
+    fun getFavorite(): Flow<List<Entity>> {
         return gitDao.getGithub()
     }
 
@@ -79,24 +100,7 @@ class GithubViewModel(
     /*end of datastore*/
 
     fun getUser() {
-        apiService.getUser()
-            .enqueue(object : Callback<List<GithubResponseItem>> {
-                override fun onResponse(
-                    call: Call<List<GithubResponseItem>>,
-                    response: Response<List<GithubResponseItem>>,
-                ) {
-                    if (response.isSuccessful) {
-                        _githubResponse.value = response.body()
-                        isLoading.value = false
-                    } else {
-                        Log.e(ContentValues.TAG, "On failure: ${response.message()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
-                    Log.e(ContentValues.TAG, "On failure: ${t.message}")
-                }
-            })
+        homeRepo.getUser()
     }
 
     /*Response api*/
@@ -122,45 +126,11 @@ class GithubViewModel(
     }
 
     fun getFollowers(name: String) {
-        apiService.getFollowers(name.ifEmpty { "null" })
-            .enqueue(object : Callback<List<GithubResponseItem>> {
-                override fun onResponse(
-                    call: Call<List<GithubResponseItem>>,
-                    response: Response<List<GithubResponseItem>>,
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
-                        _githubResponse.value = responseBody
-                    } else {
-                        Log.e(ContentValues.TAG, "On failure: ${response.message()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
-                    Log.e(ContentValues.TAG, "On failure: ${t.message}")
-                }
-            })
+        followerRepo.getFollowers(name)
     }
 
     fun getFollowing(name: String) {
-        apiService.getFollowing(name.ifEmpty { "null" })
-            .enqueue(object : Callback<List<GithubResponseItem>> {
-                override fun onResponse(
-                    call: Call<List<GithubResponseItem>>,
-                    response: Response<List<GithubResponseItem>>,
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
-                        _githubResponse.value = responseBody
-                    } else {
-                        Log.e(ContentValues.TAG, "On failure: ${response.message()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
-                    Log.e(ContentValues.TAG, "On failure: ${t.message}")
-                }
-            })
+        followingRepo.getFollowing(name)
     }
 
     fun getSearch(query: String) {
@@ -172,7 +142,8 @@ class GithubViewModel(
                 ) {
                     if (response.isSuccessful) {
                         val responseBody = response.body()
-                        _githubResponse.value = responseBody?.items
+                        _githubResponse1.value = responseBody?.items
+                        Log.d("neo-search", responseBody.toString())
                     } else {
                         Log.e(ContentValues.TAG, "Search failure: ${response.message()}")
                     }
