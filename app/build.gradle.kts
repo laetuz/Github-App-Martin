@@ -83,10 +83,6 @@ dependencies {
     implementation("androidx.room:room-ktx:2.5.0-alpha02")
     kapt ("androidx.room:room-compiler:2.5.0-alpha02")
 
-    //livedata
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0")
-
-
     //DataStore
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
 
