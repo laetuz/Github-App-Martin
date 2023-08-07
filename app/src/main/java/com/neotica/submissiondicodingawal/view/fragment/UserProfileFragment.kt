@@ -2,18 +2,19 @@ package com.neotica.submissiondicodingawal.view.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
+import com.neotica.submissiondicodingawal.data.local.database.Entity
 import com.neotica.submissiondicodingawal.databinding.LayoutProfileBinding
 import com.neotica.submissiondicodingawal.view.fragment.adapter.TabAdapter
 import com.neotica.submissiondicodingawal.viewmodel.GithubViewModel
-import com.neotica.submissiondicodingawal.data.local.database.Entity
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -59,36 +60,44 @@ class UserProfileFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun bindHEHE() {
-        val avatar = UserProfileFragmentArgs.fromBundle(arguments as Bundle).avatar.toString()
-        val profile = UserProfileFragmentArgs.fromBundle(arguments as Bundle).profile
+        val args = UserProfileFragmentArgs.fromBundle(arguments as Bundle)
+        val avatar = args.avatar.toString()
+        val profile = args.profile
+        viewModel.getUserDetail(profile)
+
         binding.apply {
-            viewModel.getUserDetail(profile)
-            lifecycleScope.launchWhenStarted {
-                viewModel.detailResponse.collect {github ->
-                    if (github != null) {
-                        val followers = github.followers.toString()
-                        val following = github.following.toString()
-                        ivBookmark.setOnClickListener {
-                            viewModel.setFavorite(Entity(profile, avatar, true))
-                            Toast.makeText(context, "$profile added to favorite", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        tvFollowers.text = "Followers: $followers"
-                        tvFollowing.text = "Following: $following"
-                        tvName.text = github.name
-                    }
-                }
-            }
             Glide.with(root)
                 .load(avatar)
                 .circleCrop()
                 .into(ivProfile)
             tvUsername.text = profile
                 .replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(
-                        Locale.ROOT
-                    ) else it.toString()
+                    if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
                 }
+            ivBookmark.setOnClickListener {
+                lifecycleScope.launch {
+                    viewModel.setFavorite(Entity(profile, avatar, true))
+                }
+                Toast.makeText(context, "$profile added to favorite", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                viewModel.isLoadingDetail.collect{
+                    binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+                }
+            }
+            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                viewModel.detailResponse.collect { github ->
+                    if (github != null) {
+                        val followers = github.followers.toString()
+                        val following = github.following.toString()
+
+                        tvFollowers.text = "Followers: $followers"
+                        tvFollowing.text = "Following: $following"
+                        tvName.text = github.name
+                    }
+                }
+            }
         }
 
     }

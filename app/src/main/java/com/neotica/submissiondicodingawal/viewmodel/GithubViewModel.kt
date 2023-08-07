@@ -1,38 +1,30 @@
 package com.neotica.submissiondicodingawal.viewmodel
 
 import android.app.Application
-import android.content.ContentValues
 import android.content.Context
-import android.util.Log
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.*
 import com.neotica.submissiondicodingawal.data.local.repo.HomeRepo
-import com.neotica.submissiondicodingawal.view.di.diskIO
-import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
-import com.neotica.submissiondicodingawal.data.remote.model.SearchResponse
-import com.neotica.submissiondicodingawal.data.remote.model.UserDetailResponse
-import com.neotica.submissiondicodingawal.data.remote.retrofit.ApiService
 import com.neotica.submissiondicodingawal.data.local.database.Dao
 import com.neotica.submissiondicodingawal.data.local.database.Entity
 import com.neotica.submissiondicodingawal.data.local.repo.FollowerRepo
 import com.neotica.submissiondicodingawal.data.local.repo.FollowingRepo
+import com.neotica.submissiondicodingawal.data.local.repo.SearchRepo
+import com.neotica.submissiondicodingawal.data.local.repo.UserDetailRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.withContext
 
 class GithubViewModel(
     private val homeRepo: HomeRepo,
     private val followingRepo: FollowingRepo,
     private val followerRepo: FollowerRepo,
-    private val apiService: ApiService,
+    private val detailRepo: UserDetailRepo,
+    private val searchRepo: SearchRepo,
     private val gitDao: Dao,
     application: Application
 ) : ViewModel() {
@@ -41,35 +33,62 @@ class GithubViewModel(
     val isLoadingHome = homeRepo.isLoading
 
     //Following Screen
-    val isLoadingFollowing = followingRepo.isLoading
     val followingResponse = followingRepo.followingResponse
+    val isLoadingFollowing = followingRepo.isLoading
 
     //Follower Screen
-    val isLoadingFollower = followerRepo.isLoading
     val followerResponse = followerRepo.followersResponse
+    val isLoadingFollower = followerRepo.isLoading
+
+    //Detail Screen
+    val detailResponse = detailRepo.detailResponse
+    val isLoadingDetail = detailRepo.isLoading
 
     //Search Screen
-    private val _githubResponse1 = MutableStateFlow<List<GithubResponseItem>?>(null)
-    val githubResponse1: StateFlow<List<GithubResponseItem>?> = _githubResponse1
+    val searchResponse = searchRepo.searchResponse
+    val isLoadingSearch = searchRepo.isLoading
 
-    private val _detailResponse = MutableStateFlow<UserDetailResponse?>(null)
-    val detailResponse: StateFlow<UserDetailResponse?> = _detailResponse
     private val context = application
+
+    fun getUser() {
+        viewModelScope.launch {
+            homeRepo.getUser()
+        }
+
+    }
+
+    fun getUserDetail(name: String) {
+        detailRepo.getUserDetail(name)
+    }
+
+    fun getFollowers(name: String) {
+        followerRepo.getFollowers(name)
+    }
+
+    fun getFollowing(name: String) {
+        followingRepo.getFollowing(name)
+    }
+
+    fun getSearch(query: String) {
+        searchRepo.getSearch(query)
+    }
+
+    /*End of response*/
 
     /*Bookmark*/
     fun getFavorite(): Flow<List<Entity>> {
         return gitDao.getGithub()
     }
 
-    fun setFavorite(entity: Entity) {
-        diskIO.execute {
+    suspend fun setFavorite(entity: Entity) {
+        withContext(Dispatchers.IO){
             entity.isBookmarked = true
             gitDao.insertBookmark(entity)
         }
     }
 
-    fun deleteUser(username: String) {
-        diskIO.execute {
+    suspend fun deleteUser(username: String) {
+        withContext(Dispatchers.IO){
             gitDao.deleteUser(username)
         }
     }
@@ -91,68 +110,11 @@ class GithubViewModel(
         }
     }
 
-    fun getThemeSettings(): LiveData<String> {
-        return getThemeValue().asLiveData()
+    fun getThemeSettings(): Flow<String> {
+        return getThemeValue()
     }
     /*end of datastore*/
 
-    fun getUser() {
-        homeRepo.getUser()
-    }
-
-    /*Response api*/
-    fun getUserDetail(name: String) {
-        apiService.getUserDetail(name.ifEmpty { "null" })
-            .enqueue(object : Callback<UserDetailResponse> {
-                override fun onResponse(
-                    call: Call<UserDetailResponse>,
-                    response: Response<UserDetailResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
-                        _detailResponse.value = responseBody
-                    } else {
-                        Log.e(ContentValues.TAG, response.message())
-                    }
-                }
-
-                override fun onFailure(call: Call<UserDetailResponse>, t: Throwable) {
-                    t.message?.let { Log.e(ContentValues.TAG, it) }
-                }
-            })
-    }
-
-    fun getFollowers(name: String) {
-        followerRepo.getFollowers(name)
-    }
-
-    fun getFollowing(name: String) {
-        followingRepo.getFollowing(name)
-    }
-
-    fun getSearch(query: String) {
-        apiService.searchUser(query.ifEmpty { "null" })
-            .enqueue(object : Callback<SearchResponse> {
-                override fun onResponse(
-                    call: Call<SearchResponse>,
-                    response: Response<SearchResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
-                        _githubResponse1.value = responseBody?.items
-                        Log.d("neo-search", responseBody.toString())
-                    } else {
-                        Log.e(ContentValues.TAG, "Search failure: ${response.message()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                    Log.e(ContentValues.TAG, "Search : ${t.message}")
-                }
-            })
-    }
-
-    /*End of response*/
     companion object {
         private const val DATASTORE_THEME = "preferences"
         private val THEME_KEY = stringPreferencesKey("theme_key")

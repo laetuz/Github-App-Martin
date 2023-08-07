@@ -35,7 +35,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun getUserViewModel() {
-        val gitAdapter = FavoriteAdapter(viewModel)
+        val gitAdapter = FavoriteAdapter(viewModel, lifecycleScope)
         binding.progressBar.isVisible = true
         lifecycleScope.launchWhenStarted {
             viewModel.getFavorite().collect{

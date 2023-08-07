@@ -44,8 +44,13 @@ class SearchFragment : Fragment() {
         val searchArgs = SearchFragmentArgs.fromBundle(arguments as Bundle).profile
         Toast.makeText(context, searchArgs, Toast.LENGTH_SHORT).show()
         viewModel.getSearch(searchArgs)
-        lifecycleScope.launchWhenStarted {
-            viewModel.githubResponse1.collect {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.isLoadingSearch.collect{
+                binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.searchResponse.collect {
                 if (it != null) {
                     showLoading(false)
                     setSearchRecView(it)

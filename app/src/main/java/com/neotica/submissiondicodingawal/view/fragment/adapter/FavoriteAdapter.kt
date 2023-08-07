@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -13,9 +14,13 @@ import com.neotica.submissiondicodingawal.databinding.IvUserFavoriteBinding
 import com.neotica.submissiondicodingawal.view.fragment.FavoriteFragmentDirections
 import com.neotica.submissiondicodingawal.viewmodel.GithubViewModel
 import com.neotica.submissiondicodingawal.data.local.database.Entity
+import kotlinx.coroutines.launch
 
 
-class FavoriteAdapter(private val viewModel: GithubViewModel) :
+class FavoriteAdapter(
+    private val viewModel: GithubViewModel,
+    private val lifecycleScope : LifecycleCoroutineScope
+) :
     ListAdapter<Entity, FavoriteAdapter.FavViewHolder>(DIFF_CALLBACK) {
 
     class FavViewHolder(val binding: IvUserFavoriteBinding) :
@@ -44,7 +49,7 @@ class FavoriteAdapter(private val viewModel: GithubViewModel) :
         val avatar = user.imageUrl
         holder.bind(user)
         holder.binding.ivFavorite.setOnClickListener {
-            viewModel.deleteUser(user.username)
+            lifecycleScope.launch { viewModel.deleteUser(user.username) }
             Toast.makeText(holder.itemView.context, "${user.username} Deleted", Toast.LENGTH_SHORT)
                 .show()
         }
