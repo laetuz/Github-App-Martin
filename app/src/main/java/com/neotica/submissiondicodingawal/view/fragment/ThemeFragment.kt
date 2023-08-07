@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.main.fragment
+package com.neotica.submissiondicodingawal.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.neotica.submissiondicodingawal.databinding.ThemeFragmentBinding
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
+import com.neotica.submissiondicodingawal.viewmodel.GithubViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ThemeFragment : Fragment() {

@@ -1,8 +1,8 @@
-package com.neotica.submissiondicodingawal.retrofit
+package com.neotica.submissiondicodingawal.data.remote.retrofit
 
-import com.neotica.submissiondicodingawal.response.GithubResponseItem
-import com.neotica.submissiondicodingawal.response.SearchResponse
-import com.neotica.submissiondicodingawal.response.UserDetailResponse
+import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
+import com.neotica.submissiondicodingawal.data.remote.model.SearchResponse
+import com.neotica.submissiondicodingawal.data.remote.model.UserDetailResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.main.fragment.adapter
+package com.neotica.submissiondicodingawal.view.fragment.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.databinding.IvUserFavoriteBinding
-import com.neotica.submissiondicodingawal.main.fragment.FavoriteFragmentDirections
-import com.neotica.submissiondicodingawal.mvvm.GithubViewModel
-import com.neotica.submissiondicodingawal.room.Entity
+import com.neotica.submissiondicodingawal.view.fragment.FavoriteFragmentDirections
+import com.neotica.submissiondicodingawal.viewmodel.GithubViewModel
+import com.neotica.submissiondicodingawal.data.local.database.Entity
 
 
 class FavoriteAdapter(private val viewModel: GithubViewModel) :

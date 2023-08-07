@@ -1,18 +1,20 @@
-package com.neotica.submissiondicodingawal.main.fragment.adapter
+package com.neotica.submissiondicodingawal.view.fragment.adapter
 
 import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
-import com.neotica.submissiondicodingawal.response.GithubResponseItem
+import com.neotica.submissiondicodingawal.view.fragment.SearchFragmentDirections
+import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
 import java.util.*
 
-class FollowingAdapter(private val users: List<GithubResponseItem>) :
-    RecyclerView.Adapter<FollowingAdapter.ListViewHolder>() {
+
+class SearchAdapter(private val users: List<GithubResponseItem>) :
+    RecyclerView.Adapter<SearchAdapter.ListViewHolder>() {
 
     class ListViewHolder(private val binding: IvUserListBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -20,10 +22,10 @@ class FollowingAdapter(private val users: List<GithubResponseItem>) :
             binding.apply {
                 tvUsername.text = listUser.login
                     .replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(
-                        Locale.ROOT
-                    ) else it.toString()
-                }
+                        if (it.isLowerCase()) it.titlecase(
+                            Locale.ROOT
+                        ) else it.toString()
+                    }
                 Glide.with(root)
                     .load(listUser.avatar_url)
                     .circleCrop()
@@ -43,9 +45,16 @@ class FollowingAdapter(private val users: List<GithubResponseItem>) :
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         Log.d(TAG, "Binding item at position $position")
         holder.bindData(users[position])
+        val avatar = users[position].avatar_url
         val username = users[position].login
-        holder.itemView.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "Search $username on Home screen", Toast.LENGTH_SHORT).show()
+        val followers = users[position].followers_url
+        val following = users[position].following_url
+        holder.itemView.setOnClickListener { view ->
+            val action =
+                SearchFragmentDirections.actionSearchFragmentToUserProfileFragment(
+                    avatar, username, followers, following
+                )
+            view.findNavController().navigate(action)
         }
     }
 }

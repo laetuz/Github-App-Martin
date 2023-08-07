@@ -1,9 +1,10 @@
-package com.neotica.submissiondicodingawal.room
+package com.neotica.submissiondicodingawal.data.local.database
 
 import androidx.room.ColumnInfo
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@androidx.room.Entity("github")
+@Entity("github")
 class Entity(
     @field:ColumnInfo("username")
     @field:PrimaryKey

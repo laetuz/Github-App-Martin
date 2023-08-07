@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.response
+package com.neotica.submissiondicodingawal.data.remote.model
 
 data class UserDetailResponse(
     val followers: Int,

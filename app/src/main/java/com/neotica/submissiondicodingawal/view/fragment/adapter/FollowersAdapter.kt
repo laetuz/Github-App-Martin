@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.main.fragment.adapter
+package com.neotica.submissiondicodingawal.view.fragment.adapter
 
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -8,8 +8,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
-import com.neotica.submissiondicodingawal.main.fragment.adapter.FollowersAdapter.ListViewHolder
-import com.neotica.submissiondicodingawal.response.GithubResponseItem
+import com.neotica.submissiondicodingawal.view.fragment.adapter.FollowersAdapter.ListViewHolder
+import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
 import java.util.*
 
 

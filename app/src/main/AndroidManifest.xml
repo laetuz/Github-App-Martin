@@ -14,7 +14,7 @@
         android:theme="@style/Theme.SubmissionDicodingAwal"
         tools:targetApi="31">
         <activity
-            android:name=".main.SplashScreen"
+            android:name=".view.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.MainActivity"
+            android:name=".view.MainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

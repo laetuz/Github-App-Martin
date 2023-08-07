@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.main
+package com.neotica.submissiondicodingawal.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
