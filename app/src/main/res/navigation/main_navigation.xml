@@ -63,9 +63,6 @@
         <argument
             android:name="profile"
             app:argType="string" />
-        <action
-            android:id="@+id/action_followersFragment_self"
-            app:destination="@id/followersFragment" />
     </fragment>
     <fragment
         android:id="@+id/followingFragment"
@@ -78,14 +75,6 @@
         <argument
             android:name="profile"
             app:argType="string" />
-        <action
-            android:id="@+id/action_followingFragment_to_userProfileFragment"
-            app:destination="@id/userProfileFragment"
-            app:popUpTo="@id/userProfileFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_followingFragment_self"
-            app:destination="@id/followingFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
