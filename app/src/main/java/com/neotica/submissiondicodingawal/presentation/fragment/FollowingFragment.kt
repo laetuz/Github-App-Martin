@@ -34,7 +34,7 @@ class FollowingFragment : Fragment() {
         lifecycleScope.launch { getFollowing() }
     }
 
-    private fun getFollowing() {
+    private suspend fun getFollowing() {
         val following = requireParentFragment().arguments?.let {
             FollowingFragmentArgs.fromBundle(it)
         }?.profile

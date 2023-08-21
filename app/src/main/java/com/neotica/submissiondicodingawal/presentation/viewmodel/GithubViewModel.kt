@@ -5,23 +5,24 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.neotica.submissiondicodingawal.data.local.database.Dao
 import com.neotica.submissiondicodingawal.data.local.database.Entity
 import com.neotica.submissiondicodingawal.data.local.repo.FollowerRepo
-import com.neotica.submissiondicodingawal.data.local.repo.FollowingRepo
 import com.neotica.submissiondicodingawal.data.local.repo.SearchRepo
 import com.neotica.submissiondicodingawal.data.local.repo.UserDetailRepo
-import com.neotica.submissiondicodingawal.domain.HomeInteractor
+import com.neotica.submissiondicodingawal.domain.following.FollowingInteractor
+import com.neotica.submissiondicodingawal.domain.home.HomeInteractor
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class GithubViewModel(
     private val homeInteractor: HomeInteractor,
-    private val followingRepo: FollowingRepo,
+    private val followingInteractor: FollowingInteractor,
     private val followerRepo: FollowerRepo,
     private val detailRepo: UserDetailRepo,
     private val searchRepo: SearchRepo,
@@ -33,8 +34,8 @@ class GithubViewModel(
     val isLoadingHome = homeInteractor.isLoading
 
     //Following Screen
-    val followingResponse = followingRepo.followingResponse
-    val isLoadingFollowing = followingRepo.isLoading
+    val followingResponse = followingInteractor.followingResponse
+    val isLoadingFollowing = followingInteractor.isLoading
 
     //Follower Screen
     val followerResponse = followerRepo.followersResponse
@@ -65,8 +66,8 @@ class GithubViewModel(
         followerRepo.getFollowers(name)
     }
 
-    fun getFollowing(name: String) {
-        followingRepo.getFollowing(name)
+    suspend fun getFollowing(name: String) {
+        followingInteractor.getFollowing(name)
     }
 
     fun getSearch(query: String) {

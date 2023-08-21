@@ -4,16 +4,17 @@ import android.content.ContentValues
 import android.util.Log
 import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
 import com.neotica.submissiondicodingawal.data.remote.retrofit.ApiService
+import com.neotica.submissiondicodingawal.domain.following.IFollowingRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FollowingRepo(private val apiService: ApiService) {
-    val followingResponse = MutableStateFlow<List<GithubResponseItem>?>(null)
-    val isLoading: MutableStateFlow<Boolean> by lazy { MutableStateFlow(false) }
+class FollowingRepo(private val apiService: ApiService): IFollowingRepo {
+    override val followingResponse = MutableStateFlow<List<GithubResponseItem>?>(null)
+    override val isLoading: MutableStateFlow<Boolean> by lazy { MutableStateFlow(false) }
 
-    fun getFollowing(name: String) {
+    override suspend fun getFollowing(name: String) {
         isLoading.value = true
         apiService.getFollowing(name.ifEmpty { "null" })
             .enqueue(object : Callback<List<GithubResponseItem>> {
