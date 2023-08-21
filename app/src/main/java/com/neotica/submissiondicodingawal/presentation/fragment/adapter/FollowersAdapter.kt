@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.view.fragment.adapter
+package com.neotica.submissiondicodingawal.presentation.fragment.adapter
 
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -7,13 +7,15 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.neotica.submissiondicodingawal.view.fragment.UserFragmentDirections
-import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
 import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
-import java.util.*
+import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
+import com.neotica.submissiondicodingawal.presentation.fragment.UserProfileFragmentDirections
+import com.neotica.submissiondicodingawal.presentation.fragment.adapter.FollowersAdapter.ListViewHolder
+import java.util.Locale
 
-class UserAdapter(private val users: List<GithubResponseItem>) :
-    RecyclerView.Adapter<UserAdapter.ListViewHolder>() {
+
+class FollowersAdapter(private val users: List<GithubResponseItem>) :
+    RecyclerView.Adapter<ListViewHolder>() {
 
     class ListViewHolder(private val binding: IvUserListBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -34,8 +36,7 @@ class UserAdapter(private val users: List<GithubResponseItem>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val binding = IvUserListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ListViewHolder(binding)
+        return ListViewHolder(IvUserListBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
     override fun getItemCount(): Int {
@@ -45,16 +46,16 @@ class UserAdapter(private val users: List<GithubResponseItem>) :
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         Log.d(TAG, "Binding item at position $position")
         holder.bindData(users[position])
-        val avatar = users[position].avatar_url
-        val username = users[position].login
-        val followers = users[position].followers_url
-        val following = users[position].following_url
-        holder.itemView.setOnClickListener { view ->
-            val action =
-                UserFragmentDirections.actionUserFragmentToUserProfileFragment(
-                    avatar, username, followers, following
+        val userPosition = users[position]
+        val username = userPosition.login
+        val avatar = userPosition.avatar_url
+        holder.itemView.setOnClickListener {
+            holder.itemView.setOnClickListener {
+                val action = UserProfileFragmentDirections.actionUserProfileFragmentSelf(
+                    avatar, username, username, username
                 )
-            view.findNavController().navigate(action)
+                it.findNavController().navigate(action)
+            }
         }
     }
 }

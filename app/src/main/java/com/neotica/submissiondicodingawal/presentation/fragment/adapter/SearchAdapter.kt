@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.view.fragment.adapter
+package com.neotica.submissiondicodingawal.presentation.fragment.adapter
 
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -8,7 +8,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
-import com.neotica.submissiondicodingawal.view.fragment.SearchFragmentDirections
+import com.neotica.submissiondicodingawal.presentation.fragment.SearchFragmentDirections
 import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
 import java.util.*
 

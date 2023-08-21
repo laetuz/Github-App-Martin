@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.view.di
+package com.neotica.submissiondicodingawal.di
 
 import androidx.room.Room
 import com.neotica.submissiondicodingawal.BuildConfig

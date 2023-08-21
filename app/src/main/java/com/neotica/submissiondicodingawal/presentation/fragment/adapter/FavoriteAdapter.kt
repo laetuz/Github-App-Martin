@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.view.fragment.adapter
+package com.neotica.submissiondicodingawal.presentation.fragment.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.databinding.IvUserFavoriteBinding
-import com.neotica.submissiondicodingawal.view.fragment.FavoriteFragmentDirections
-import com.neotica.submissiondicodingawal.viewmodel.GithubViewModel
+import com.neotica.submissiondicodingawal.presentation.fragment.FavoriteFragmentDirections
+import com.neotica.submissiondicodingawal.presentation.viewmodel.GithubViewModel
 import com.neotica.submissiondicodingawal.data.local.database.Entity
 import kotlinx.coroutines.launch
 

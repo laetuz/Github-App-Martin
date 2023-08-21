@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.view.fragment
+package com.neotica.submissiondicodingawal.presentation.fragment
 
 import android.os.Bundle
 import android.view.*
@@ -8,8 +8,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
-import com.neotica.submissiondicodingawal.view.fragment.adapter.SearchAdapter
-import com.neotica.submissiondicodingawal.viewmodel.GithubViewModel
+import com.neotica.submissiondicodingawal.presentation.fragment.adapter.SearchAdapter
+import com.neotica.submissiondicodingawal.presentation.viewmodel.GithubViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {

@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.view.fragment.adapter
+package com.neotica.submissiondicodingawal.presentation.fragment.adapter
 
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -9,13 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
-import com.neotica.submissiondicodingawal.view.fragment.UserProfileFragmentDirections
-import com.neotica.submissiondicodingawal.view.fragment.adapter.FollowersAdapter.ListViewHolder
+import com.neotica.submissiondicodingawal.presentation.fragment.UserProfileFragmentDirections
 import java.util.Locale
 
-
-class FollowersAdapter(private val users: List<GithubResponseItem>) :
-    RecyclerView.Adapter<ListViewHolder>() {
+class FollowingAdapter(private val users: List<GithubResponseItem>) :
+    RecyclerView.Adapter<FollowingAdapter.ListViewHolder>() {
 
     class ListViewHolder(private val binding: IvUserListBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -23,10 +21,10 @@ class FollowersAdapter(private val users: List<GithubResponseItem>) :
             binding.apply {
                 tvUsername.text = listUser.login
                     .replaceFirstChar {
-                        if (it.isLowerCase()) it.titlecase(
-                            Locale.ROOT
-                        ) else it.toString()
-                    }
+                    if (it.isLowerCase()) it.titlecase(
+                        Locale.ROOT
+                    ) else it.toString()
+                }
                 Glide.with(root)
                     .load(listUser.avatar_url)
                     .circleCrop()
@@ -50,12 +48,10 @@ class FollowersAdapter(private val users: List<GithubResponseItem>) :
         val username = userPosition.login
         val avatar = userPosition.avatar_url
         holder.itemView.setOnClickListener {
-            holder.itemView.setOnClickListener {
-                val action = UserProfileFragmentDirections.actionUserProfileFragmentSelf(
-                    avatar, username, username, username
-                )
-                it.findNavController().navigate(action)
-            }
+            val action = UserProfileFragmentDirections.actionUserProfileFragmentSelf(
+                avatar, username, username, username
+            )
+            it.findNavController().navigate(action)
         }
     }
 }

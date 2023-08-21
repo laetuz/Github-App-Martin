@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.view.fragment
+package com.neotica.submissiondicodingawal.presentation.fragment
 
 import android.app.SearchManager
 import android.content.Context
@@ -22,8 +22,8 @@ import com.neotica.submissiondicodingawal.R
 import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
-import com.neotica.submissiondicodingawal.view.fragment.adapter.UserAdapter
-import com.neotica.submissiondicodingawal.viewmodel.GithubViewModel
+import com.neotica.submissiondicodingawal.presentation.fragment.adapter.UserAdapter
+import com.neotica.submissiondicodingawal.presentation.viewmodel.GithubViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 

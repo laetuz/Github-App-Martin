@@ -1,10 +1,10 @@
-package com.neotica.submissiondicodingawal.view.fragment.adapter
+package com.neotica.submissiondicodingawal.presentation.fragment.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.neotica.submissiondicodingawal.view.fragment.FollowersFragment
-import com.neotica.submissiondicodingawal.view.fragment.FollowingFragment
-import com.neotica.submissiondicodingawal.view.fragment.UserProfileFragment
+import com.neotica.submissiondicodingawal.presentation.fragment.FollowersFragment
+import com.neotica.submissiondicodingawal.presentation.fragment.FollowingFragment
+import com.neotica.submissiondicodingawal.presentation.fragment.UserProfileFragment
 
 class TabAdapter(activity: UserProfileFragment) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int {

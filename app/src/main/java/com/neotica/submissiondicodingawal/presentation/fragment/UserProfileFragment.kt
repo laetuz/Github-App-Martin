@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.view.fragment
+package com.neotica.submissiondicodingawal.presentation.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -12,8 +12,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neotica.submissiondicodingawal.data.local.database.Entity
 import com.neotica.submissiondicodingawal.databinding.LayoutProfileBinding
-import com.neotica.submissiondicodingawal.view.fragment.adapter.TabAdapter
-import com.neotica.submissiondicodingawal.viewmodel.GithubViewModel
+import com.neotica.submissiondicodingawal.presentation.fragment.adapter.TabAdapter
+import com.neotica.submissiondicodingawal.presentation.viewmodel.GithubViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*

@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.view
+package com.neotica.submissiondicodingawal.presentation
 
 import android.annotation.SuppressLint
 import android.content.Intent
