@@ -4,16 +4,19 @@ import android.content.ContentValues
 import android.util.Log
 import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
 import com.neotica.submissiondicodingawal.data.remote.retrofit.ApiService
+import com.neotica.submissiondicodingawal.domain.IHomeRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeRepo(private val apiService: ApiService) {
-    val userResponse = MutableStateFlow<List<GithubResponseItem>?>(null)
-    val isLoading: MutableStateFlow<Boolean> by lazy { MutableStateFlow(false) }
+class HomeRepo(
+    private val apiService: ApiService
+): IHomeRepo {
+    override val userResponse = MutableStateFlow<List<GithubResponseItem>?>(null)
+    override val isLoading: MutableStateFlow<Boolean> by lazy { MutableStateFlow(false) }
 
-    fun getUser() {
+    override suspend fun getUser() {
         isLoading.value = true
         apiService.getUser()
             .enqueue(object : Callback<List<GithubResponseItem>> {
