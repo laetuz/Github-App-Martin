@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.data.local.database
+package com.neotica.submissiondicodingawal.core.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.databinding.IvUserFavoriteBinding
 import com.neotica.submissiondicodingawal.presentation.fragment.FavoriteFragmentDirections
 import com.neotica.submissiondicodingawal.presentation.viewmodel.GithubViewModel
-import com.neotica.submissiondicodingawal.data.local.database.Entity
+import com.neotica.submissiondicodingawal.core.data.local.database.Entity
 import kotlinx.coroutines.launch
 
 

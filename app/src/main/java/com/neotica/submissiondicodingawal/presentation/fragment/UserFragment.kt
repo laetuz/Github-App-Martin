@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.R
-import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
+import com.neotica.submissiondicodingawal.core.data.remote.model.GithubResponseItem
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.presentation.fragment.adapter.UserAdapter
@@ -76,7 +76,7 @@ class UserFragment : Fragment() {
                     ) else it.toString()
                 }
             Glide.with(root)
-                .load(listUser.avatar_url)
+                .load(listUser.avatarUrl)
                 .circleCrop()
                 .into(ivProfile)
         }

@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
-import com.neotica.submissiondicodingawal.data.local.database.Entity
+import com.neotica.submissiondicodingawal.core.data.local.database.Entity
 import com.neotica.submissiondicodingawal.databinding.LayoutProfileBinding
 import com.neotica.submissiondicodingawal.presentation.fragment.adapter.TabAdapter
 import com.neotica.submissiondicodingawal.presentation.viewmodel.GithubViewModel

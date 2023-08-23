@@ -1,4 +1,4 @@
-package com.neotica.submissiondicodingawal.data.remote
+package com.neotica.submissiondicodingawal.core.data.remote
 
 sealed class Result<R>(val data: R? = null, val message: String? = null) {
     class Loading<T>: Result<T>()

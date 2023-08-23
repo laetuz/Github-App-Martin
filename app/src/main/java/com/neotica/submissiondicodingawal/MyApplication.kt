@@ -1,11 +1,11 @@
 package com.neotica.submissiondicodingawal
 
 import android.app.Application
-import com.neotica.submissiondicodingawal.di.localModule
-import com.neotica.submissiondicodingawal.di.networkModule
-import com.neotica.submissiondicodingawal.di.repositoryModule
-import com.neotica.submissiondicodingawal.di.useCase
-import com.neotica.submissiondicodingawal.di.viewModule
+import com.neotica.submissiondicodingawal.core.di.localModule
+import com.neotica.submissiondicodingawal.core.di.networkModule
+import com.neotica.submissiondicodingawal.core.di.repositoryModule
+import com.neotica.submissiondicodingawal.core.di.useCase
+import com.neotica.submissiondicodingawal.core.di.viewModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
 

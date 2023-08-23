@@ -1,10 +1,10 @@
-package com.neotica.submissiondicodingawal.data.local.repo
+package com.neotica.submissiondicodingawal.core.data.local.repo
 
 import android.content.ContentValues
 import android.util.Log
-import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
-import com.neotica.submissiondicodingawal.data.remote.model.SearchResponse
-import com.neotica.submissiondicodingawal.data.remote.retrofit.ApiService
+import com.neotica.submissiondicodingawal.core.data.remote.model.GithubResponseItem
+import com.neotica.submissiondicodingawal.core.data.remote.model.SearchResponse
+import com.neotica.submissiondicodingawal.core.data.remote.retrofit.ApiService
 import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.Call
 import retrofit2.Callback

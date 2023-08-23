@@ -2,39 +2,42 @@ package com.neotica.submissiondicodingawal.data.local.repo
 
 import android.content.ContentValues
 import android.util.Log
-import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
-import com.neotica.submissiondicodingawal.data.remote.retrofit.ApiService
-import com.neotica.submissiondicodingawal.domain.following.IFollowingRepo
+import com.neotica.submissiondicodingawal.core.data.remote.model.GithubResponseItem
+import com.neotica.submissiondicodingawal.core.data.remote.retrofit.ApiService
+import com.neotica.submissiondicodingawal.core.domain.home.IHomeRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FollowingRepo(private val apiService: ApiService): IFollowingRepo {
-    override val followingResponse = MutableStateFlow<List<GithubResponseItem>?>(null)
+class HomeRepo(
+    private val apiService: ApiService
+): IHomeRepo {
+    override val userResponse = MutableStateFlow<List<GithubResponseItem>?>(null)
     override val isLoading: MutableStateFlow<Boolean> by lazy { MutableStateFlow(false) }
 
-    override suspend fun getFollowing(name: String) {
+    override suspend fun getUser() {
         isLoading.value = true
-        apiService.getFollowing(name.ifEmpty { "null" })
+        apiService.getUser()
             .enqueue(object : Callback<List<GithubResponseItem>> {
                 override fun onResponse(
                     call: Call<List<GithubResponseItem>>,
                     response: Response<List<GithubResponseItem>>,
                 ) {
                     if (response.isSuccessful) {
+                        userResponse.value = response.body()
                         isLoading.value = false
-                        val responseBody = response.body()
-                        followingResponse.value = responseBody
+                        Log.d("neo-tag", response.body().toString())
                     } else {
                         isLoading.value = false
+                        userResponse.value = response.body()
                         Log.e(ContentValues.TAG, "On failure: ${response.message()}")
                     }
                 }
 
                 override fun onFailure(call: Call<List<GithubResponseItem>>, t: Throwable) {
-                    isLoading.value = false
                     Log.e(ContentValues.TAG, "On failure: ${t.message}")
+                    isLoading.value = false
                 }
             })
     }

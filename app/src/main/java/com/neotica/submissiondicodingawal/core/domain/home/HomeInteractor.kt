@@ -1,6 +1,6 @@
-package com.neotica.submissiondicodingawal.domain
+package com.neotica.submissiondicodingawal.core.domain.home
 
-import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
+import com.neotica.submissiondicodingawal.core.data.remote.model.GithubResponseItem
 import kotlinx.coroutines.flow.StateFlow
 
 class HomeInteractor(private val homeRepo: IHomeRepo) {

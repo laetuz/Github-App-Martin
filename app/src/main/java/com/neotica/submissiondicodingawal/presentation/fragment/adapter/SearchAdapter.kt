@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
 import com.neotica.submissiondicodingawal.presentation.fragment.SearchFragmentDirections
-import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
+import com.neotica.submissiondicodingawal.core.data.remote.model.GithubResponseItem
 import java.util.*
 
 
@@ -27,7 +27,7 @@ class SearchAdapter(private val users: List<GithubResponseItem>) :
                         ) else it.toString()
                     }
                 Glide.with(root)
-                    .load(listUser.avatar_url)
+                    .load(listUser.avatarUrl)
                     .circleCrop()
                     .into(ivProfile)
             }
@@ -45,10 +45,10 @@ class SearchAdapter(private val users: List<GithubResponseItem>) :
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         Log.d(TAG, "Binding item at position $position")
         holder.bindData(users[position])
-        val avatar = users[position].avatar_url
+        val avatar = users[position].avatarUrl
         val username = users[position].login
-        val followers = users[position].followers_url
-        val following = users[position].following_url
+        val followers = users[position].followersUrl
+        val following = users[position].followingUrl
         holder.itemView.setOnClickListener { view ->
             val action =
                 SearchFragmentDirections.actionSearchFragmentToUserProfileFragment(

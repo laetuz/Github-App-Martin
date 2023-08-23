@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
-import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
+import com.neotica.submissiondicodingawal.core.data.remote.model.GithubResponseItem
 import com.neotica.submissiondicodingawal.presentation.fragment.adapter.SearchAdapter
 import com.neotica.submissiondicodingawal.presentation.viewmodel.GithubViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
