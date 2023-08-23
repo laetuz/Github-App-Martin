@@ -1,10 +1,12 @@
-package com.neotica.submissiondicodingawal.di
+package com.neotica.submissiondicodingawal.core.di
 
 import androidx.room.Room
 import com.neotica.submissiondicodingawal.BuildConfig
-import com.neotica.submissiondicodingawal.data.utils.Constants
-import com.neotica.submissiondicodingawal.data.remote.retrofit.ApiService
-import com.neotica.submissiondicodingawal.data.local.database.GithubDatabase
+import com.neotica.submissiondicodingawal.core.data.local.database.LocalDataSource
+import com.neotica.submissiondicodingawal.core.data.remote.RemoteDataSource
+import com.neotica.submissiondicodingawal.core.data.utils.Constants
+import com.neotica.submissiondicodingawal.core.data.remote.retrofit.ApiService
+import com.neotica.submissiondicodingawal.core.data.local.database.GithubDatabase
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -16,6 +18,8 @@ val localModule = module{
     single{
         Room.databaseBuilder(androidContext(), GithubDatabase::class.java, "Github.db").build()
     }
+    single { LocalDataSource(get()) }
+    single { RemoteDataSource(get()) }
 }
 val networkModule= module {
     single{

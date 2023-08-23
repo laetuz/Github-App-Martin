@@ -7,13 +7,13 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neotica.submissiondicodingawal.data.local.database.Dao
-import com.neotica.submissiondicodingawal.data.local.database.Entity
-import com.neotica.submissiondicodingawal.data.local.repo.FollowerRepo
-import com.neotica.submissiondicodingawal.data.local.repo.SearchRepo
-import com.neotica.submissiondicodingawal.data.local.repo.UserDetailRepo
-import com.neotica.submissiondicodingawal.domain.following.FollowingInteractor
-import com.neotica.submissiondicodingawal.domain.home.HomeInteractor
+import com.neotica.submissiondicodingawal.core.data.local.database.Entity
+import com.neotica.submissiondicodingawal.core.data.local.repo.SearchRepo
+import com.neotica.submissiondicodingawal.core.data.local.repo.UserDetailRepo
+import com.neotica.submissiondicodingawal.core.domain.database.DaoInteractor
+import com.neotica.submissiondicodingawal.core.domain.follower.FollowerInteractor
+import com.neotica.submissiondicodingawal.core.domain.following.FollowingInteractor
+import com.neotica.submissiondicodingawal.core.domain.home.HomeInteractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -23,10 +23,10 @@ import kotlinx.coroutines.withContext
 class GithubViewModel(
     private val homeInteractor: HomeInteractor,
     private val followingInteractor: FollowingInteractor,
-    private val followerRepo: FollowerRepo,
+    private val followerRepo: FollowerInteractor,
     private val detailRepo: UserDetailRepo,
     private val searchRepo: SearchRepo,
-    private val gitDao: Dao,
+    private val gitDao: DaoInteractor,
     application: Application
 ) : ViewModel() {
     //Home Screen
@@ -38,7 +38,7 @@ class GithubViewModel(
     val isLoadingFollowing = followingInteractor.isLoading
 
     //Follower Screen
-    val followerResponse = followerRepo.followersResponse
+    val followerResponse = followerRepo.followerResponse
     val isLoadingFollower = followerRepo.isLoading
 
     //Detail Screen
@@ -62,8 +62,8 @@ class GithubViewModel(
         detailRepo.getUserDetail(name)
     }
 
-    fun getFollowers(name: String) {
-        followerRepo.getFollowers(name)
+    suspend fun getFollowers(name: String) {
+        followerRepo.getFollower(name)
     }
 
     suspend fun getFollowing(name: String) {
@@ -78,13 +78,13 @@ class GithubViewModel(
 
     /*Bookmark*/
     fun getFavorite(): Flow<List<Entity>> {
-        return gitDao.getGithub()
+        return gitDao.getUser()
     }
 
     suspend fun setFavorite(entity: Entity) {
         withContext(Dispatchers.IO){
             entity.isBookmarked = true
-            gitDao.insertBookmark(entity)
+            gitDao.addUser(entity)
         }
     }
 

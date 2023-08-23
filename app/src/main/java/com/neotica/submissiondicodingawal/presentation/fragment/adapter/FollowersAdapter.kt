@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
+import com.neotica.submissiondicodingawal.core.data.remote.model.GithubResponseItem
 import com.neotica.submissiondicodingawal.databinding.IvUserListBinding
 import com.neotica.submissiondicodingawal.presentation.fragment.UserProfileFragmentDirections
 import com.neotica.submissiondicodingawal.presentation.fragment.adapter.FollowersAdapter.ListViewHolder
@@ -28,7 +28,7 @@ class FollowersAdapter(private val users: List<GithubResponseItem>) :
                         ) else it.toString()
                     }
                 Glide.with(root)
-                    .load(listUser.avatar_url)
+                    .load(listUser.avatarUrl)
                     .circleCrop()
                     .into(ivProfile)
             }
@@ -48,7 +48,7 @@ class FollowersAdapter(private val users: List<GithubResponseItem>) :
         holder.bindData(users[position])
         val userPosition = users[position]
         val username = userPosition.login
-        val avatar = userPosition.avatar_url
+        val avatar = userPosition.avatarUrl
         holder.itemView.setOnClickListener {
             holder.itemView.setOnClickListener {
                 val action = UserProfileFragmentDirections.actionUserProfileFragmentSelf(

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.submissiondicodingawal.databinding.RvUserListBinding
 import com.neotica.submissiondicodingawal.presentation.fragment.adapter.FollowersAdapter
 import com.neotica.submissiondicodingawal.presentation.viewmodel.GithubViewModel
-import com.neotica.submissiondicodingawal.data.remote.model.GithubResponseItem
+import com.neotica.submissiondicodingawal.core.data.remote.model.GithubResponseItem
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -33,7 +33,7 @@ class FollowersFragment : Fragment() {
         lifecycleScope.launch { getFollowers() }
     }
 
-    private fun getFollowers() {
+    private suspend fun getFollowers() {
         val test = requireParentFragment().arguments?.let {
             FollowersFragmentArgs.fromBundle(it)
         }?.profile
